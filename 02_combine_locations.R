@@ -13,7 +13,7 @@ source('01_pull_centres.R')
 postcode_regex_string = '(?:[A-Za-z][A-HJ-Ya-hj-y]?[0-9][0-9A-Za-z]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})'
 
 #google maps set up
-api_key = '' #Google maps API key
+api_key = 'AIzaSyADK-Xycf5uqnyvYDPP58wSQdnLJZCzrr8' #Google maps API key
 
 register_google(api_key)
 
@@ -140,8 +140,15 @@ ccp_still_missings %>%
 
 #select the completes
 ccp_looked_up %>% 
-  filter(!is.na(place_name)) %>% select(-search_name) -> ccp_looked_up_complete
+  filter(!is.na(place_name)) %>% select(-search_name) %>% 
+  mutate(postcode = ifelse(redcap_data_access_group == 'Queen Elizabeth University Hospital, Glasgow University Hospital Monklands Airdrie' & dag_id == 'RHM01',
+                         'G51 4TF', postcode),
+         place_name = ifelse(redcap_data_access_group == 'Queen Elizabeth University Hospital, Glasgow University Hospital Monklands Airdrie' & dag_id == 'RHM01',
+                         'Queen Elizabeth University Hospital', place_name),
+         country = ifelse(redcap_data_access_group == 'Queen Elizabeth University Hospital, Glasgow University Hospital Monklands Airdrie' & dag_id == 'RHM01',
+                           'Scotland', country))-> ccp_looked_up_complete
 
+unique(ccp_looked_up_complete$redcap_data_access_group)
 #Run the still missings through google
 result_lat_long = geocode(ccp_still_missings$redcap_data_access_group, output = "latlona", source = "google") 
 
@@ -191,12 +198,17 @@ postcode_lookup = postcode_lookup %>%
          country = ifelse(startsWith(ccg, 'W1'), 'Wales', country),
          country = ifelse(startsWith(ccg, 'ZC'), 'Northern Ireland', country))
 
-postcode_country = postcode_lookup %>% select(pcds, country)
+postcode_country = postcode_lookup %>% mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% select(pcds, country, ccg) 
 
 combined_all = ccp_combined_2 %>% 
   left_join(postcode_country, by = c('postcode' = 'pcds')) %>% 
   mutate(place_name = redcap_data_access_group) %>% 
   select(colnames(combined_all)) %>% rbind(combined_all)
+
+postcode_ccg = postcode_lookup %>% mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% select(pcds, ccg)
+
+combined_all = combined_all %>% 
+  left_join(postcode_ccg, by = c('postcode' = 'pcds'))
 
 #write a csv
 save_date = Sys.Date() %>% format('%d-%B-%Y')
