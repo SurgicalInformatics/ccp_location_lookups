@@ -20,7 +20,7 @@ register_google(api_key)
 #load in locations
 
 #First the file from ewen
-nhs_ods_list = read_xslx('location_data/NHS_ODS.xlsx')
+nhs_ods_list = read_excel('location_data/NHS_ODS.xlsx')
 hosp_2_list_in = read_csv('location_data/Hospital2.csv')
 ni_list = read_csv('location_data/niorg.csv', col_names = F)
 wales_list = read_csv('location_data/wlhbsite.csv', col_names = F)
@@ -96,9 +96,12 @@ look_up_all = rbind(wales_list, ni_list, hosp_2_list, scotland_list) %>%
                      org_code = ifelse(org_code == 'RHM00', 'RHM00', org_code)) %>% 
               distinct(org_code, .keep_all = T)
 
+#Add a row for RMH
+
 #write_csv(look_up_all, 'look_up_all_uk_hospital_codes.csv')
 
 ccp_looked_up = ccp_ids_labelled %>% 
+  filter(subjid != 'RHM01-0001') %>% 
   select(redcap_data_access_group, dag_id) %>% 
   distinct(dag_id, .keep_all = T) %>% 
   mutate(dag_id = str_replace_all(dag_id, 'O', '0')) %>% 
@@ -146,7 +149,7 @@ ccp_looked_up %>%
          place_name = ifelse(redcap_data_access_group == 'Queen Elizabeth University Hospital, Glasgow University Hospital Monklands Airdrie' & dag_id == 'RHM01',
                          'Queen Elizabeth University Hospital', place_name),
          country = ifelse(redcap_data_access_group == 'Queen Elizabeth University Hospital, Glasgow University Hospital Monklands Airdrie' & dag_id == 'RHM01',
-                           'Scotland', country))-> ccp_looked_up_complete
+                           'Scotland', country)) -> ccp_looked_up_complete
 
 #unique(ccp_looked_up_complete$redcap_data_access_group)
 
@@ -211,10 +214,32 @@ postcode_ccg = postcode_lookup %>% mutate(ccg = ifelse(country != 'England', hlt
 combined_all = combined_all %>% 
   left_join(postcode_ccg, by = c('postcode' = 'pcds'))
 
-#Manual edit to Chesterfield, Devon hosps
-# 1 Torbay Hospital               E38000152
-# 2 North Devon District Hospital E38000129
-# 3 Chesterfield Royal Hospital   E38000115
+#Add row for RMH01
+
+combined_all = combined_all %>% 
+               mutate(postcode = ifelse(dag_id == 'RMH01', 'SO16 6YD', postcode),
+                      country = ifelse(dag_id == 'RMH01', 'England', country),
+                      lon = ifelse(dag_id == 'RMH01', -1.4350899457931519, lon),
+                      lat = ifelse(dag_id == 'RMH01', 50.933021545410156, lat),
+                      ccg = ifelse(dag_id == 'RMH01', 'E38000167', ccg),
+                      place_name = ifelse(dag_id == 'SL116', 'Western General Hospital', place_name),
+                      postcode = ifelse(dag_id == 'SL116', 'EH4 2XU', postcode),
+                      country = ifelse(dag_id == 'SL116', 'Scotland', country),
+                      lon = ifelse(dag_id == 'SL116', -3.2338808, lon),
+                      lat = ifelse(dag_id == 'SL116', 55.9621052, lat),
+                      ccg = ifelse(dag_id == 'SL116', 'S08000024', ccg),
+                      place_name = ifelse(dag_id == 'RW5JJ', 'Royal Preston Hospital', place_name),
+                      postcode = ifelse(dag_id == 'RW5JJ', 'PR2 9HT', postcode),
+                      country = ifelse(dag_id == 'RW5JJ', 'England', country),
+                      lon = ifelse(dag_id == 'RW5JJ', -2.7040145, lon),
+                      lat = ifelse(dag_id == 'RW5JJ', 53.7908668, lat),
+                      ccg = ifelse(dag_id == 'RW5JJ', 'E38000227', ccg),
+                      place_name = ifelse(dag_id == 'RVV00', 'Queen Elizabeth The Queen Mother Hospital', place_name),
+                      postcode = ifelse(dag_id == 'RVV00', 'CT9 4AN', postcode),
+                      country = ifelse(dag_id == 'RVV00', 'England', country),
+                      lon = ifelse(dag_id == 'RVV00', 1.3893986940383911, lon),
+                      lat = ifelse(dag_id == 'RVV00', 51.3780517578125, lat),
+                      ccg = ifelse(dag_id == 'RVV00', 'E38000184', ccg))
 
 #write a csv
 save_date = Sys.Date() %>% format('%d-%B-%Y')
