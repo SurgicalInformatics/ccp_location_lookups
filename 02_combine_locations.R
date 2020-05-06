@@ -26,8 +26,13 @@ hosp_2_list_in = read_csv('location_data/Hospital2.csv')
 ni_list = read_csv('location_data/niorg.csv', col_names = F)
 wales_list = read_csv('location_data/wlhbsite.csv', col_names = F)
 scotland_list = read_csv('location_data/scotland_hospitals.csv')
-
-postcode_lookup = read_csv('location_data/NSPL_FEB_2020_UK.csv')
+townsend_scores_output_areas = read_csv('location_data/townsend_oa_2011.csv') %>% clean_names() %>% select(geo_code, tds)
+postcode_lookup = read_csv('location_data/NSPL_FEB_2020_UK.csv') %>% 
+  left_join(townsend_scores_output_areas, by = c('oa11' = 'geo_code')) %>% 
+  group_by(ccg) %>% 
+  mutate(tds_mean = mean(tds, na.rm = T),
+         imd_average = mean(imd, na.rm = T)) %>% 
+  ungroup()
 
 #First, fix errors in hosp2 list as there's lots of them
 hosp_2_list_keep = hosp_2_list_in %>% 
@@ -203,19 +208,21 @@ postcode_lookup = postcode_lookup %>%
          country = ifelse(startsWith(ccg, 'W1'), 'Wales', country),
          country = ifelse(startsWith(ccg, 'ZC'), 'Northern Ireland', country))
 
-postcode_country = postcode_lookup %>% mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% select(pcds, country, ccg) 
+postcode_country = postcode_lookup %>% mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% select(pcds, country, ccg, tds_mean) 
 
 combined_all = ccp_combined_2 %>% 
   left_join(postcode_country, by = c('postcode' = 'pcds')) %>% 
   mutate(place_name = redcap_data_access_group) %>% 
   select(colnames(combined_all)) %>% rbind(combined_all)
 
-postcode_ccg = postcode_lookup %>% mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% select(pcds, ccg)
+postcode_ccg = postcode_lookup %>% mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% select(pcds, ccg, tds_mean)
 
 combined_all = combined_all %>% 
   left_join(postcode_ccg, by = c('postcode' = 'pcds'))
 
-#Add row for RMH01
+#Add manual edits
+
+combined_all %>% filter(is.na(postcode))
 
 combined_all = combined_all %>% 
                mutate(postcode = ifelse(dag_id == 'RMH01', 'SO16 6YD', postcode),
@@ -235,7 +242,7 @@ combined_all = combined_all %>%
                       lon = ifelse(dag_id == 'RW5JJ', -2.7040145, lon),
                       lat = ifelse(dag_id == 'RW5JJ', 53.7908668, lat),
                       ccg = ifelse(dag_id == 'RW5JJ', 'E38000227', ccg),
-                      place_name = ifelse(dag_id == 'RVV00', 'Queen Elizabeth The Queen Mother Hospital', place_name),
+                      place_name = ifelse(dag_id == 'RVV00' , 'Queen Elizabeth The Queen Mother Hospital', place_name),
                       postcode = ifelse(dag_id == 'RVV00', 'CT9 4AN', postcode),
                       country = ifelse(dag_id == 'RVV00', 'England', country),
                       lon = ifelse(dag_id == 'RVV00', 1.3893986940383911, lon),
@@ -246,7 +253,25 @@ combined_all = combined_all %>%
                       country = ifelse(dag_id == 'RK590', 'England', country),
                       lon = ifelse(dag_id == 'RK590', -4.1136713027954102, lon),
                       lat = ifelse(dag_id == 'RK590', 50.416728973388672, lat),
-                      ccg = ifelse(dag_id == 'RK590', 'E38000230', ccg))
+                      ccg = ifelse(dag_id == 'RK590', 'E38000230', ccg),
+                      place_name = ifelse(dag_id == 'RNG90', 'Peterborough City Hospital', place_name),
+                      postcode = ifelse(dag_id == 'RNG90', 'PE3 9GZ', postcode),
+                      country = ifelse(dag_id == 'RNG90', 'England', country),
+                      lon = ifelse(dag_id == 'RNG90', -0.2785687, lon),
+                      lat = ifelse(dag_id == 'RNG90', 52.5837926, lat),
+                      ccg = ifelse(dag_id == 'RNG90', 'E38000026', ccg),
+                      place_name = ifelse(dag_id == 'RAWAS', 'Royal Shrewsbury Hospital', place_name),
+                      postcode = ifelse(dag_id == 'RAWAS', 'SY3 8XQ', postcode),
+                      country = ifelse(dag_id == 'RAWAS', 'England', country),
+                      lon = ifelse(dag_id == 'RAWAS', -2.7937374114990234, lon),
+                      lat = ifelse(dag_id == 'RAWAS', 52.709362030029297, lat),
+                      ccg = ifelse(dag_id == 'RAWAS', 'E38000147', ccg),
+                      place_name = ifelse(dag_id == 'RV001', 'William Harvey Hospital (Ashford)', place_name),
+                      postcode = ifelse(dag_id == 'RV001', 'TN24 0LZ', postcode),
+                      country = ifelse(dag_id == 'RV001', 'England', country),
+                      lon = ifelse(dag_id == 'RV001', 0.91622304916381836, lon),
+                      lat = ifelse(dag_id == 'RV001', 51.141487121582031, lat),
+                      ccg = ifelse(dag_id == 'RV001', 'E38000002', ccg))
 
 #Now lets add a city to postcode
 postcode_to_city = read_csv('location_data/postcode_city_district.csv') %>% 
@@ -258,6 +283,64 @@ postcode_to_city = read_csv('location_data/postcode_city_district.csv') %>%
 combined_all = combined_all %>% 
   mutate(postcode_start = gsub("[[:space:]].*", '', postcode)) %>% 
   left_join(postcode_to_city, by = 'postcode_start')
+
+#Finally, add back in the townsend average scores to those which needed new postcodes
+lookup_tds_avg_missing = postcode_lookup %>% select(pcds, tds_mean) %>% rename(tds_mean_new = tds_mean)
+
+combined_all = combined_all %>% 
+  left_join(lookup_tds_avg_missing, by = c('postcode' = 'pcds')) %>% 
+  mutate(tds_mean = ifelse(is.na(tds_mean), tds_mean_new, tds_mean)) %>% 
+  select(-tds_mean_new)
+
+# #CCGs not in 
+# list_english_nhs_trusts = read_csv('location_data/list_of_nhs_trusts.csv', col_names = F) %>%
+#   rename(org_code_prefix = X1,
+#          org_name = X2,
+#          city = X8,
+#          address = X5,
+#          y_code = X3,
+#          q_code = X4,
+#          postcode = X10) %>% select(org_code_prefix, org_name, city, address, postcode, y_code, q_code)
+# 
+# list_english_nhs_trusts = list_english_nhs_trusts %>%
+#   filter(!grepl('ambulance', org_name, ignore.case = T)) %>%
+#   filter(!grepl('mental', org_name, ignore.case = T)) %>%
+#   filter(!grepl('community', org_name, ignore.case = T)) %>%
+#   filter(!grepl('partnership', org_name, ignore.case = T)) %>%
+#   filter(!grepl('weston area', org_name, ignore.case = T)) %>%
+#   filter(!grepl('solent', org_name, ignore.case = T)) %>%
+#   filter(!grepl('public health', org_name, ignore.case = T)) %>%
+#   filter(!grepl('TEES, ESK AND WEAR VALLEYS NHS FOUNDATION TRUST', org_name, ignore.case = T)) %>%
+#   filter(!grepl('NORTH EAST LONDON NHS FOUNDATION TRUST', org_name, ignore.case = T)) %>%
+#   filter(!grepl('WEST LONDON NHS TRUST', org_name, ignore.case = T)) %>%
+#   filter(!grepl('NORTH STAFFORDSHIRE COMBINED HEALTHCARE NHS TRUST', org_name, ignore.case = T)) %>%
+#   filter(!grepl('OXLEAS NHS FOUNDATION TRUST', org_name, ignore.case = T)) %>%
+#   filter(!grepl('BERKSHIRE HEALTHCARE NHS FOUNDATION TRUST', org_name, ignore.case = T)) %>%
+#   filter(!grepl('MERSEY CARE NHS FOUNDATION TRUST', org_name, ignore.case = T)) %>%
+#   filter(!grepl('SOUTHERN HEALTH NHS FOUNDATION TRUST', org_name, ignore.case = T)) %>%
+#   filter(!grepl('EAST LONDON NHS FOUNDATION TRUST', org_name, ignore.case = T)) %>%
+#   filter(!grepl('NORTH STAFFORDSHIRE COMBINED HEALTHCARE NHS TRUST', org_name, ignore.case = T))
+# 
+# #ccg lookup
+# hospitals_with_ccg = look_up_all %>%
+#     mutate(org_code_prefix = str_sub(org_code, 1,3)) %>%
+#     left_join(postcode_ccg, by = c('postcode' = 'pcds')) %>%
+#     filter(country == 'England') %>%
+#     filter(!startsWith(org_code, 'NT'))
+# 
+# acute_nhs_trusts_joined = list_english_nhs_trusts %>%
+#     left_join(hospitals_with_ccg, by = 'org_code_prefix')
+# 
+# postcode_ccg %>%
+#   filter(ccg %ni% acute_nhs_trusts_joined$ccg) %>%
+#   filter(startsWith(ccg, 'E')) %>%
+#   distinct(ccg)
+# 
+# acute_nhs_trusts_joined %>% 
+#   group_by(ccg) %>% 
+#   distinct(place_name, .keep_all = T) %>% 
+#   summarise(n = n()) %>% 
+#   arrange(desc(n)) -> ccg_list_uk
 
 #write a csv
 save_date = Sys.Date() %>% format('%d-%B-%Y')
