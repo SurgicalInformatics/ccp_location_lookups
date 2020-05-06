@@ -206,16 +206,22 @@ postcode_lookup = postcode_lookup %>%
   mutate(country = ifelse(startsWith(ccg, 'S0'), 'Scotland', NA),
          country = ifelse(startsWith(ccg, 'E'), 'England', country),
          country = ifelse(startsWith(ccg, 'W1'), 'Wales', country),
-         country = ifelse(startsWith(ccg, 'ZC'), 'Northern Ireland', country))
+         country = ifelse(startsWith(ccg, 'ZC'), 'Northern Ireland', country)) %>% 
+          rename(imd_average_postcodes = imd_average)
 
-postcode_country = postcode_lookup %>% mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% select(pcds, country, ccg, tds_mean) 
+postcode_country = postcode_lookup %>% 
+  mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% 
+  rename(imd_average_postcodes = imd_average) %>% 
+  select(pcds, country, ccg, tds_mean, imd_average_postcodes) 
 
 combined_all = ccp_combined_2 %>% 
   left_join(postcode_country, by = c('postcode' = 'pcds')) %>% 
   mutate(place_name = redcap_data_access_group) %>% 
   select(colnames(combined_all)) %>% rbind(combined_all)
 
-postcode_ccg = postcode_lookup %>% mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% select(pcds, ccg, tds_mean)
+postcode_ccg = postcode_lookup %>% 
+  mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% 
+  select(pcds, ccg, tds_mean, imd_average_postcodes)
 
 combined_all = combined_all %>% 
   left_join(postcode_ccg, by = c('postcode' = 'pcds'))
@@ -285,12 +291,16 @@ combined_all = combined_all %>%
   left_join(postcode_to_city, by = 'postcode_start')
 
 #Finally, add back in the townsend average scores to those which needed new postcodes
-lookup_tds_avg_missing = postcode_lookup %>% select(pcds, tds_mean) %>% rename(tds_mean_new = tds_mean)
+lookup_tds_avg_missing = postcode_lookup %>% 
+  select(pcds, tds_mean) %>% 
+  rename(tds_mean_new = tds_mean,
+         imd_average_postcodes_new = imd_average_postcodes)
 
 combined_all = combined_all %>% 
   left_join(lookup_tds_avg_missing, by = c('postcode' = 'pcds')) %>% 
   mutate(tds_mean = ifelse(is.na(tds_mean), tds_mean_new, tds_mean)) %>% 
-  select(-tds_mean_new)
+  mutate(imd_average_postcodes = ifelse(is.na(imd_average_postcodes), imd_average_postcodes_new, imd_average_postcodes)) %>% 
+  select(-tds_mean_new, -imd_average_postcodes)
 
 # #CCGs not in 
 # list_english_nhs_trusts = read_csv('location_data/list_of_nhs_trusts.csv', col_names = F) %>%
@@ -342,7 +352,16 @@ combined_all = combined_all %>%
 #   summarise(n = n()) %>% 
 #   arrange(desc(n)) -> ccg_list_uk
 
+#Join ccp ids in 
+ccp_dag_unlabelled = ccp_ids %>% 
+                     distinct(dag_id, .keep_all = T) %>% 
+                     select(dag_id, redcap_data_access_group) %>% 
+                     rename(redcap_data_access_group_unlabelled = redcap_data_access_group)
+
+combined_all %>% 
+  left_join(ccp_dag_unlabelled, by = 'dag_id')
+
 #write a csv
 save_date = Sys.Date() %>% format('%d-%B-%Y')
 
-write_csv(combined_all, paste0('ccp_dag_id_lookup_', save_date, '.csv'))
+write_csv(combined_all, paste0('data_out_ccp_lookups/ccp_dag_id_lookup_', save_date, '.csv'))
