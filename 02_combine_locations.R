@@ -14,7 +14,7 @@ source('01_pull_centres.R')
 postcode_regex_string = '(?:[A-Za-z][A-HJ-Ya-hj-y]?[0-9][0-9A-Za-z]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})'
 
 #google maps set up
-api_key = 'AIzaSyADK-Xycf5uqnyvYDPP58wSQdnLJZCzrr8' #Google maps API key
+api_key = '' #Google maps API key
 
 register_google(api_key)
 
