@@ -14,7 +14,7 @@ source('01_pull_centres.R')
 postcode_regex_string = '(?:[A-Za-z][A-HJ-Ya-hj-y]?[0-9][0-9A-Za-z]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})'
 
 #google maps set up
-api_key = '' #Google maps API key
+api_key = 'AIzaSyADK-Xycf5uqnyvYDPP58wSQdnLJZCzrr8' #Google maps API key
 
 register_google(api_key)
 
@@ -98,9 +98,9 @@ nhs_ods_list %>% select(`ODS code`, `ODS Name`, Postcode) %>%
 
 #bind rows
 look_up_all = rbind(wales_list, ni_list, hosp_2_list, scotland_list) %>% 
-              mutate(search_name = paste0(place_name, ', ', postcode),
-                     org_code = ifelse(org_code == 'RHM00', 'RHM00', org_code)) %>% 
-              distinct(org_code, .keep_all = T)
+  mutate(search_name = paste0(place_name, ', ', postcode),
+         org_code = ifelse(org_code == 'RHM00', 'RHM00', org_code)) #%>% 
+#  distinct(org_code, .keep_all = T)
 
 #Add a row for RMH
 
@@ -109,7 +109,7 @@ look_up_all = rbind(wales_list, ni_list, hosp_2_list, scotland_list) %>%
 ccp_looked_up = ccp_ids_labelled %>% 
   filter(subjid != 'RHM01-0001') %>% 
   select(redcap_data_access_group, dag_id) %>% 
-  distinct(dag_id, .keep_all = T) %>% 
+  #distinct(dag_id, .keep_all = T) %>% 
   mutate(dag_id = str_replace_all(dag_id, 'O', '0')) %>% 
   left_join(look_up_all, by = c('dag_id' = 'org_code')) 
 
@@ -122,7 +122,7 @@ look_up_unmatch_wales = look_up_all %>% mutate(org_code = ifelse(country == 'Wal
 ccp_looked_up %>% 
   filter(is.na(place_name)) %>% 
   select(redcap_data_access_group, dag_id) %>% 
-  distinct(dag_id, .keep_all = T) %>% 
+  #distinct(dag_id, .keep_all = T) %>% 
   left_join(look_up_unmatch_wales, by = c('dag_id' = 'org_code')) -> ccp_missings
 
 ccp_missings %>% 
@@ -145,17 +145,18 @@ ccp_still_missings %>%
          redcap_data_access_group = gsub('NHST', 'NHS Trust', redcap_data_access_group),
          redcap_data_access_group = ifelse(redcap_data_access_group == 'University Hospitals of Leicester',
                                            'Leicester Royal Infirmary', redcap_data_access_group)) %>% 
-  filter(!is.na(redcap_data_access_group)) -> ccp_still_missings
+  filter(!is.na(redcap_data_access_group)) %>% 
+  distinct(dag_id, .keep_all = T) -> ccp_still_missings
 
 #select the completes
 ccp_looked_up %>% 
   filter(!is.na(place_name)) %>% select(-search_name) %>% 
   mutate(postcode = ifelse(redcap_data_access_group == 'Queen Elizabeth University Hospital, Glasgow University Hospital Monklands Airdrie' & dag_id == 'RHM01',
-                         'G51 4TF', postcode),
+                           'G51 4TF', postcode),
          place_name = ifelse(redcap_data_access_group == 'Queen Elizabeth University Hospital, Glasgow University Hospital Monklands Airdrie' & dag_id == 'RHM01',
-                         'Queen Elizabeth University Hospital', place_name),
+                             'Queen Elizabeth University Hospital', place_name),
          country = ifelse(redcap_data_access_group == 'Queen Elizabeth University Hospital, Glasgow University Hospital Monklands Airdrie' & dag_id == 'RHM01',
-                           'Scotland', country)) -> ccp_looked_up_complete
+                          'Scotland', country)) -> ccp_looked_up_complete
 
 #unique(ccp_looked_up_complete$redcap_data_access_group)
 
@@ -179,7 +180,8 @@ ccp_still_missings %>%
 
 #remove the ones with lat lons available from hosp_2_list
 ccp_combined_1 %>% 
-  filter(dag_id %ni% hosp_2_list_in$OrganisationCode) -> ccp_combined_1_to_search
+  filter(dag_id %ni% hosp_2_list_in$OrganisationCode) %>% 
+  distinct(dag_id, .keep_all = T) -> ccp_combined_1_to_search
 
 ccp_combined_result_lat_long = geocode(ccp_combined_1_to_search$postcode, output = "latlona", source = "google") 
 
@@ -207,11 +209,10 @@ postcode_lookup = postcode_lookup %>%
          country = ifelse(startsWith(ccg, 'E'), 'England', country),
          country = ifelse(startsWith(ccg, 'W1'), 'Wales', country),
          country = ifelse(startsWith(ccg, 'ZC'), 'Northern Ireland', country)) %>% 
-          rename(imd_average_postcodes = imd_average)
+  rename(imd_average_postcodes = imd_average)
 
 postcode_country = postcode_lookup %>% 
   mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% 
-  rename(imd_average_postcodes = imd_average) %>% 
   select(pcds, country, ccg, tds_mean, imd_average_postcodes) 
 
 combined_all = ccp_combined_2 %>% 
@@ -231,60 +232,60 @@ combined_all = combined_all %>%
 combined_all %>% filter(is.na(postcode))
 
 combined_all = combined_all %>% 
-               mutate(postcode = ifelse(dag_id == 'RMH01', 'SO16 6YD', postcode),
-                      country = ifelse(dag_id == 'RMH01', 'England', country),
-                      lon = ifelse(dag_id == 'RMH01', -1.4350899457931519, lon),
-                      lat = ifelse(dag_id == 'RMH01', 50.933021545410156, lat),
-                      ccg = ifelse(dag_id == 'RMH01', 'E38000167', ccg),
-                      place_name = ifelse(dag_id == 'SL116', 'Western General Hospital', place_name),
-                      postcode = ifelse(dag_id == 'SL116', 'EH4 2XU', postcode),
-                      country = ifelse(dag_id == 'SL116', 'Scotland', country),
-                      lon = ifelse(dag_id == 'SL116', -3.2338808, lon),
-                      lat = ifelse(dag_id == 'SL116', 55.9621052, lat),
-                      ccg = ifelse(dag_id == 'SL116', 'S08000024', ccg),
-                      place_name = ifelse(dag_id == 'RW5JJ', 'Royal Preston Hospital', place_name),
-                      postcode = ifelse(dag_id == 'RW5JJ', 'PR2 9HT', postcode),
-                      country = ifelse(dag_id == 'RW5JJ', 'England', country),
-                      lon = ifelse(dag_id == 'RW5JJ', -2.7040145, lon),
-                      lat = ifelse(dag_id == 'RW5JJ', 53.7908668, lat),
-                      ccg = ifelse(dag_id == 'RW5JJ', 'E38000227', ccg),
-                      place_name = ifelse(dag_id == 'RVV00' , 'Queen Elizabeth The Queen Mother Hospital', place_name),
-                      postcode = ifelse(dag_id == 'RVV00', 'CT9 4AN', postcode),
-                      country = ifelse(dag_id == 'RVV00', 'England', country),
-                      lon = ifelse(dag_id == 'RVV00', 1.3893986940383911, lon),
-                      lat = ifelse(dag_id == 'RVV00', 51.3780517578125, lat),
-                      ccg = ifelse(dag_id == 'RVV00', 'E38000184', ccg),
-                      place_name = ifelse(dag_id == 'RK590', 'Derriford Hospital', place_name),
-                      postcode = ifelse(dag_id == 'RK590', 'PL6 8DH', postcode),
-                      country = ifelse(dag_id == 'RK590', 'England', country),
-                      lon = ifelse(dag_id == 'RK590', -4.1136713027954102, lon),
-                      lat = ifelse(dag_id == 'RK590', 50.416728973388672, lat),
-                      ccg = ifelse(dag_id == 'RK590', 'E38000230', ccg),
-                      place_name = ifelse(dag_id == 'RNG90', 'Peterborough City Hospital', place_name),
-                      postcode = ifelse(dag_id == 'RNG90', 'PE3 9GZ', postcode),
-                      country = ifelse(dag_id == 'RNG90', 'England', country),
-                      lon = ifelse(dag_id == 'RNG90', -0.2785687, lon),
-                      lat = ifelse(dag_id == 'RNG90', 52.5837926, lat),
-                      ccg = ifelse(dag_id == 'RNG90', 'E38000026', ccg),
-                      place_name = ifelse(dag_id == 'RAWAS', 'Royal Shrewsbury Hospital', place_name),
-                      postcode = ifelse(dag_id == 'RAWAS', 'SY3 8XQ', postcode),
-                      country = ifelse(dag_id == 'RAWAS', 'England', country),
-                      lon = ifelse(dag_id == 'RAWAS', -2.7937374114990234, lon),
-                      lat = ifelse(dag_id == 'RAWAS', 52.709362030029297, lat),
-                      ccg = ifelse(dag_id == 'RAWAS', 'E38000147', ccg),
-                      place_name = ifelse(dag_id == 'RV001', 'William Harvey Hospital (Ashford)', place_name),
-                      postcode = ifelse(dag_id == 'RV001', 'TN24 0LZ', postcode),
-                      country = ifelse(dag_id == 'RV001', 'England', country),
-                      lon = ifelse(dag_id == 'RV001', 0.91622304916381836, lon),
-                      lat = ifelse(dag_id == 'RV001', 51.141487121582031, lat),
-                      ccg = ifelse(dag_id == 'RV001', 'E38000002', ccg))
+  mutate(postcode = ifelse(dag_id == 'RMH01', 'SO16 6YD', postcode),
+         country = ifelse(dag_id == 'RMH01', 'England', country),
+         lon = ifelse(dag_id == 'RMH01', -1.4350899457931519, lon),
+         lat = ifelse(dag_id == 'RMH01', 50.933021545410156, lat),
+         ccg = ifelse(dag_id == 'RMH01', 'E38000167', ccg),
+         place_name = ifelse(dag_id == 'SL116', 'Western General Hospital', place_name),
+         postcode = ifelse(dag_id == 'SL116', 'EH4 2XU', postcode),
+         country = ifelse(dag_id == 'SL116', 'Scotland', country),
+         lon = ifelse(dag_id == 'SL116', -3.2338808, lon),
+         lat = ifelse(dag_id == 'SL116', 55.9621052, lat),
+         ccg = ifelse(dag_id == 'SL116', 'S08000024', ccg),
+         place_name = ifelse(dag_id == 'RW5JJ', 'Royal Preston Hospital', place_name),
+         postcode = ifelse(dag_id == 'RW5JJ', 'PR2 9HT', postcode),
+         country = ifelse(dag_id == 'RW5JJ', 'England', country),
+         lon = ifelse(dag_id == 'RW5JJ', -2.7040145, lon),
+         lat = ifelse(dag_id == 'RW5JJ', 53.7908668, lat),
+         ccg = ifelse(dag_id == 'RW5JJ', 'E38000227', ccg),
+         place_name = ifelse(dag_id == 'RVV00' , 'Queen Elizabeth The Queen Mother Hospital', place_name),
+         postcode = ifelse(dag_id == 'RVV00', 'CT9 4AN', postcode),
+         country = ifelse(dag_id == 'RVV00', 'England', country),
+         lon = ifelse(dag_id == 'RVV00', 1.3893986940383911, lon),
+         lat = ifelse(dag_id == 'RVV00', 51.3780517578125, lat),
+         ccg = ifelse(dag_id == 'RVV00', 'E38000184', ccg),
+         place_name = ifelse(dag_id == 'RK590', 'Derriford Hospital', place_name),
+         postcode = ifelse(dag_id == 'RK590', 'PL6 8DH', postcode),
+         country = ifelse(dag_id == 'RK590', 'England', country),
+         lon = ifelse(dag_id == 'RK590', -4.1136713027954102, lon),
+         lat = ifelse(dag_id == 'RK590', 50.416728973388672, lat),
+         ccg = ifelse(dag_id == 'RK590', 'E38000230', ccg),
+         place_name = ifelse(dag_id == 'RNG90', 'Peterborough City Hospital', place_name),
+         postcode = ifelse(dag_id == 'RNG90', 'PE3 9GZ', postcode),
+         country = ifelse(dag_id == 'RNG90', 'England', country),
+         lon = ifelse(dag_id == 'RNG90', -0.2785687, lon),
+         lat = ifelse(dag_id == 'RNG90', 52.5837926, lat),
+         ccg = ifelse(dag_id == 'RNG90', 'E38000026', ccg),
+         place_name = ifelse(dag_id == 'RAWAS', 'Royal Shrewsbury Hospital', place_name),
+         postcode = ifelse(dag_id == 'RAWAS', 'SY3 8XQ', postcode),
+         country = ifelse(dag_id == 'RAWAS', 'England', country),
+         lon = ifelse(dag_id == 'RAWAS', -2.7937374114990234, lon),
+         lat = ifelse(dag_id == 'RAWAS', 52.709362030029297, lat),
+         ccg = ifelse(dag_id == 'RAWAS', 'E38000147', ccg),
+         place_name = ifelse(dag_id == 'RV001', 'William Harvey Hospital (Ashford)', place_name),
+         postcode = ifelse(dag_id == 'RV001', 'TN24 0LZ', postcode),
+         country = ifelse(dag_id == 'RV001', 'England', country),
+         lon = ifelse(dag_id == 'RV001', 0.91622304916381836, lon),
+         lat = ifelse(dag_id == 'RV001', 51.141487121582031, lat),
+         ccg = ifelse(dag_id == 'RV001', 'E38000002', ccg))
 
 #Now lets add a city to postcode
 postcode_to_city = read_csv('location_data/postcode_city_district.csv') %>% 
-                   clean_names() %>% 
-                   select(postcode, region) %>% 
-                   rename(postcode_start = postcode,
-                          city = region) %>% distinct(postcode_start, .keep_all = T)
+  clean_names() %>% 
+  select(postcode, region) %>% 
+  rename(postcode_start = postcode,
+         city = region) #%>% distinct(postcode_start, .keep_all = T)
 
 combined_all = combined_all %>% 
   mutate(postcode_start = gsub("[[:space:]].*", '', postcode)) %>% 
@@ -292,7 +293,7 @@ combined_all = combined_all %>%
 
 #Finally, add back in the townsend average scores to those which needed new postcodes
 lookup_tds_avg_missing = postcode_lookup %>% 
-  select(pcds, tds_mean) %>% 
+  select(pcds, tds_mean, imd_average_postcodes) %>% 
   rename(tds_mean_new = tds_mean,
          imd_average_postcodes_new = imd_average_postcodes)
 
@@ -353,16 +354,22 @@ combined_all = combined_all %>%
 #   arrange(desc(n)) -> ccg_list_uk
 
 #Join ccp ids in 
-ccp_dag_unlabelled = ccp_ids %>% 
-                     distinct(dag_id, .keep_all = T) %>% 
-                     select(dag_id, redcap_data_access_group) %>% 
-                     rename(redcap_data_access_group_unlabelled = redcap_data_access_group)
+rm(list=setdiff(ls(), c('ccp_ids', 'combined_all')))
 
+ccp_dag_unlabelled = ccp_ids %>% 
+  distinct(dag_id, .keep_all = T) %>% 
+  select(dag_id, redcap_data_access_group) %>% 
+  rename(redcap_data_access_group_unlabelled = redcap_data_access_group)
+
+#
 combined_all = combined_all %>% 
+  distinct(dag_id, .keep_all = T) %>% 
   left_join(ccp_dag_unlabelled, by = 'dag_id') %>% 
   select(redcap_data_access_group, redcap_data_access_group_unlabelled, everything())
+
 
 #write a csv
 save_date = Sys.Date() %>% format('%d-%B-%Y')
 
 write_csv(combined_all, paste0('data_out_ccp_lookups/ccp_dag_id_lookup_', save_date, '.csv'))
+write_csv(combined_all, paste0('data_out_ccp_lookups/ccp_dag_id_lookup.csv'))
