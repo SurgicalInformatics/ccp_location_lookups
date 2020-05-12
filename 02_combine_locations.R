@@ -300,8 +300,6 @@ combined_all = combined_all %>%
 
 #Add manual edits
 
-combined_all %>% filter(is.na(postcode))
-
 combined_all = combined_all %>% 
   mutate(postcode = ifelse(dag_id == 'RMH01', 'SO16 6YD', postcode),
          country = ifelse(dag_id == 'RMH01', 'England', country),
@@ -367,7 +365,21 @@ combined_all = combined_all %>%
          country = ifelse(dag_id == 'NR501', 'England', country),
          lon = ifelse(dag_id == 'NR501', -4.111707, lon),
          lat = ifelse(dag_id == 'NR501', 50.3789894, lat),
-         ccg = ifelse(dag_id == 'NR501', 'E38000230', ccg))
+         ccg = ifelse(dag_id == 'NR501', 'E38000230', ccg),
+         place_name = ifelse(dag_id == 'RDR05', 'Brighton General Hospital', place_name),
+         postcode = ifelse(dag_id == 'RDR05', 'BN2 3EW', postcode),
+         country = ifelse(dag_id == 'RDR05', 'England', country),
+         lon = ifelse(dag_id == 'RDR05', 0.1145, lon),
+         lat = ifelse(dag_id == 'RDR05', 50.8310, lat),
+         ccg = ifelse(dag_id == 'RDR05', 'E38000021', ccg),
+         place_name = ifelse(dag_id == 'RZWAS', 'Royal Shrewsbury Hospital', place_name),
+         postcode = ifelse(dag_id == 'RZWAS', 'SY3 8XQ', postcode),
+         country = ifelse(dag_id == 'RZWAS', 'England', country),
+         lon = ifelse(dag_id == 'RZWAS', -2.79373741149902, lon),
+         lat = ifelse(dag_id == 'RZWAS', 52.7093620300293, lat),
+         ccg = ifelse(dag_id == 'RZWAS', 'E38000147', ccg))
+
+combined_all %>% filter(is.na(postcode))
 
 #combined_all %>% filter(is.na(postcode)) -> test
 
