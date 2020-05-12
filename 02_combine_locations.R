@@ -74,7 +74,7 @@ register_google(api_key)
 
 #First the file from ewen
 nhs_ods_list = read_excel('location_data/NHS_ODS.xlsx')
-hosp_2_list_in = read_csv('location_data/Hospital2.csv')
+hosp_2_list_in = read_csv('location_data/hospital_3.csv')
 ni_list = read_csv('location_data/niorg.csv', col_names = F)
 wales_list = read_csv('location_data/wlhbsite.csv', col_names = F)
 scotland_list = read_csv('location_data/scotland_hospitals.csv')
