@@ -1,4 +1,105 @@
 redcap_data_access_group,redcap_data_access_group_unlabelled,dag_id,place_name,postcode,country,lon,lat,ccg,postcode_start,city,nhs_region
+Cardiff and Vale University Health Board,cardiff_and_vale_u,7AH41,Cardiff and Vale University Health Board,CF14 4XW,Wales,-3.1902577,51.50679580000001,W11000029,CF14,Cardiff,Wales
+Betsi Cadwaladr University Health Board,betsi_cadwaladr_un,7AIAU,Betsi Cadwaladr University Health Board,LL49 9AQ,Wales,-4.1500492,52.9408526,W11000023,LL49,Gwynedd,Wales
+The Pennine Acute Hospitals NHS Trust,the_pennine_acute,01452,The Pennine Acute Hospitals NHS Trust,M8 5RB,England,-2.2294865,53.5178824,E38000217,M8,Manchester,North West
+The Pennine Acute Hospitals NHS Trust,the_pennine_acute,04152,The Pennine Acute Hospitals NHS Trust,M8 5RB,England,-2.2294865,53.5178824,E38000217,M8,Manchester,North West
+Aneurin Bevan University Health Board,aneurin_bevan_univ,11049,Aneurin Bevan University Health Board,NP11 5GH,Wales,-3.1404429,51.66249759999999,W11000028,NP11,Caerphilly,Wales
+Aneurin Bevan University Health Board,aneurin_bevan_univ,11409,Aneurin Bevan University Health Board,NP11 5GH,Wales,-3.1404429,51.66249759999999,W11000028,NP11,Caerphilly,Wales
+University College London Hospitals NHSFT,university_college,14142,University College London Hospitals NHSFT,NW1 2BU,England,-0.1363551,51.5250834,E38000027,NW1,Camden,London
+The Pennine Acute Hospitals NHS Trust,the_pennine_acute,14151,The Pennine Acute Hospitals NHS Trust,M8 5RB,England,-2.2294865,53.5178824,E38000217,M8,Manchester,North West
+The Pennine Acute Hospitals NHS Trust,the_pennine_acute,14152,The Pennine Acute Hospitals NHS Trust,M8 5RB,England,-2.2294865,53.5178824,E38000217,M8,Manchester,North West
+The Pennine Acute Hospitals NHS Trust,the_pennine_acute,14153,The Pennine Acute Hospitals NHS Trust,M8 5RB,England,-2.2294865,53.5178824,E38000217,M8,Manchester,North West
+Cardiff and Vale University Health Board,cardiff_and_vale_u,A74BV,Cardiff and Vale University Health Board,CF14 4XW,Wales,-3.1902577,51.50679580000001,W11000029,CF14,Cardiff,Wales
+Epsom & St Helier NHSFT,epsom__st_helier_n,aRVR05,St Helier Hospital,SM5 1AA,England,-0.184798,51.38041,E38000179,SM5,Sutton,London
+Alder Hey Children's Hospital,alder_hey_children,CBS25,Alder Hey Children's Hospital,L12 2AP,England,-2.8968504,53.419159,E38000101,L12,Liverpool,North West
+Derbyshire Healthcare NHSFT,derbyshire_healthc,DEA01,Derbyshire Healthcare NHSFT,DE22 3LZ,England,-1.512301,52.918022,E38000229,DE22,Derby,Midlands
+"Queen Elizabeth University Hospital, Glasgow",queen_elizabeth_un,G450H,"Queen Elizabeth University Hospital, Glasgow",G51 4TF,Scotland,-4.340215199999999,55.8628356,S08000031,G51,Glasgow,Scotland
+"Queen Elizabeth University Hospital, Glasgow",queen_elizabeth_un,GN405,"Queen Elizabeth University Hospital, Glasgow",G51 4TF,Scotland,-4.340215199999999,55.8628356,S08000031,G51,Glasgow,Scotland
+Nottingham University Hosptials NHS Trust,nottingham_univers,IR1RA,Nottingham University Hosptials NHS Trust,NG5 1PB,England,-1.1570212,52.9904528,E38000132,NG5,Nottingham,Midlands
+Aberdeen Royal Infirmary,aberdeen_royal_inf,N100H,Aberdeen Royal Infirmary,AB25 2ZN,Scotland,-2.1357086,57.1540765,S08000020,AB25,Aberdeen,Scotland
+Livewell Southwest,livewell_southwest,NR501,Mount Gould Hospital,PL4 7QD,England,-4.111707,50.3789894,E38000230,PL4,Plymouth,South West
+Manchester University NHS Foundation Trust,manchester_univers,R0A01,Manchester Royal Infirmary,M13 9WL,England,-2.226157,53.46287,E38000217,M13,Manchester,North West
+South Tyneside and Sunderland NHS Foundation Trust,south_tyneside_and,R0B0Q,South Tyneside and Sunderland NHS Foundation Trust,NE34 0PL,England,-1.4277704,54.9714091,E38000163,NE34,South Tyneside,North East and Yorkshire
+South Tyneside and Sunderland NHS Foundation Trust,south_tyneside_and,R0B01,South Tyneside and Sunderland NHS Foundation Trust,NE34 0PL,England,-1.4277704,54.9714091,E38000163,NE34,South Tyneside,North East and Yorkshire
+Manchester University NHS Foundation Trust,manchester_univers,R0S02,Manchester Royal Infirmary,M13 9WL,England,-2.226157,53.46287,E38000217,M13,Manchester,North West
+Worcestershire Health and Care NHS Trust,worcestershire_hea,R1A0C,Worcestershire Health and Care NHS Trust,WR5 1JR,England,-2.1798262,52.19248289999999,E38000166,WR5,Worcester,Midlands
+Solent NHS Trust,solent_nhs_trust,R1CD4,Solent NHS Trust,SO19 8BR,England,-1.3308632,50.9015728,E38000167,SO19,Southampton,South East
+King's College Hospital,kings_college_hosp,R1Z01,King's College Hospital,SE5 9RS,England,-0.0938548,51.4681404,E38000092,SE5,Lambeth,London
+Torbay and south Devon Hospital,torbay_and_south_d,RA009,Torbay and south Devon Hospital,TQ2 7TD,England,-3.552757,50.4877399,E38000230,TQ2,Torbay,South West
+Weston Area Health NHS Trust,weston_area_health,RA7C2,Weston Area Health NHS Trust,BS23 4TQ,England,-2.9725926,51.32237,E38000222,BS23,North Somerset,South West
+Weston Area Health NHS Trust,weston_area_health,RA7C7,Weston Area Health NHS Trust,BS23 4TQ,England,-2.9725926,51.32237,E38000222,BS23,North Somerset,South West
+Mid and South Essex University Hospitals Group,mid_and_south_esse,RAT01,Southend Hospital,SS0 0RY,England,0.6877328,51.55386,E38000168,SS0,Southend-on-Sea,East of England
+Wirral University Teaching Hospital NHFT,wirral_university,RBLI4,Wirral University Teaching Hospital NHFT,CH49 5PE,England,-3.094562,53.37042899999999,E38000208,CH49,Wirral,North West
+Bedfordshire Hospitals NHS Foundation Trust,bedfordshire_hospi,RC112,Bedfordshire Hospitals NHS Foundation Trust,MK42 9DJ,England,-0.4732078,52.1287579,E38000010,MK42,Bedford,East of England
+Poole Hospital NHS Trust,poole_hospital_nhs,RD300,Poole Hospital NHS Trust,BH15 2JB,England,-1.9737732,50.7213346,E38000045,BH15,Poole,South West
+Harrogate District Hospital,harrogate_district,RDC01,Harrogate District Hospital,HG2 7SX,England,-1.5175624,53.9937105,E38000073,HG2,Harrogate,North East and Yorkshire
+Sussex Community NHSFT,sussex_community_n,RDR05,Brighton General Hospital,BN2 3EW,England,0.1145,50.831,E38000021,BN2,Brighton and Hove,South East
+University Hospitals of North Midlands NHS Trust,university_hospital,REJ01,Royal Stoke University Hospital,ST4 6QG,England,-2.21294,53.00381,E38000175,ST4,Staffordshire,Midlands
+Aintree University Hospital,aintree_university,REM20,Aintree University Hospital,L9 7AL,England,-2.9317603,53.4656706,E38000101,L9,Liverpool,North West
+Royal Liverpool & Broadgreen University Hospitals NHSFT,NA,REMR0,Royal Liverpool & Broadgreen University Hospitals NHSFT,CH47 4AL,England,-3.1847842,53.3873785,E38000208,CH47,Wirral,North West
+Leicester Royal Infirmary,university_hospitaj,REWAA,Leicester Royal Infirmary,LE1 5WW,England,-1.1354407,52.6257466,E38000097,LE1,Leicester,Midlands
+Barking Havering and Redbridge University NHS Trust,barking_havering_a,RF4FH,Barking Havering and Redbridge University NHS Trust,RM7 0AG,England,0.1790309,51.5689553,E38000077,RM7,Havering,London
+Nottinghamshire Healthcare NHS Foundation Trust,nottinghamshire_he,RHAPA,Nottinghamshire Healthcare NHS Foundation Trust,NG3 6AA,England,-1.1262896,52.9793569,E38000132,NG3,Gedling,Midlands
+Shropshire Community Health NHS Trust,shropshire_communi,RIDHQ,Shropshire Community Health NHS Trust,SY3 8XL,England,-2.7893873,52.70587,E38000147,SY3,Shropshire,Midlands
+London North West University Healthcare NHS Trust,london_north_west,RIK04,London North West University Healthcare NHS Trust,HA1 3UJ,England,-0.322738,51.57544230000001,E38000020,HA1,Harrow,London
+Cornwall Partnership NHSFT,cornwall_partnersh,RJ827,Cornwall Partnership NHSFT,PL31 2QN,England,-4.738597299999999,50.470256,E38000089,PL31,Cornwall,South West
+Wirral University Teaching Hospital NHFT,wirral_university,RLB14,Wirral University Teaching Hospital NHFT,CH49 5PE,England,-3.094562,53.37042899999999,E38000208,CH49,Wirral,North West
+"Chelsea and Westminster Hospital NHS, 369 Fulham Rd, London",chelsea__westminst,RMQ91,"Chelsea and Westminster Hospital NHS, 369 Fulham Rd, London",SW10 9NH,England,-0.182401,51.4849533,E38000202,SW10,Kensington and Chelsea,London
+North West Anglia NHSFT,north_west_anglia,RNG90,Peterborough City Hospital,PE3 9GZ,England,-0.2785687,52.5837926,E38000026,PE3,Peterborough,East of England
+North Cumbria Integrated Care NHSFT,north_cumbria_inte,RNN62,North Cumbria Integrated Care NHSFT,CA2 7HY,England,-2.9573904,54.8964115,E38000215,CA2,Carlisle,North East and Yorkshire
+North Cumbria Integrated Care NHSFT,north_cumbria_inte,RNNBD,North Cumbria Integrated Care NHSFT,CA2 7HY,England,-2.9573904,54.8964115,E38000215,CA2,Carlisle,North East and Yorkshire
+West Cumberland Hospital,west_cumberland_ho,RNNBX,West Cumberland Hospital,CA28 8JG,England,-3.5631756,54.5302041,E38000215,CA28,Copeland,North East and Yorkshire
+North Cumbria Integrated Care NHSFT,north_cumbria_inte,RNNCL,North Cumbria Integrated Care NHSFT,CA2 7HY,England,-2.9573904,54.8964115,E38000215,CA2,Carlisle,North East and Yorkshire
+Royal Preston Hospital,royal_preston_hosp,RNX02,Royal Preston Hospital,PR2 9HT,England,-2.7069534,53.7903928,E38000227,PR2,Preston,North West
+Lincolnshire Partnership Foundation Trust,lincolnshire_partn,RP7SG,Lincolnshire Partnership Foundation Trust,LN1 1FS,England,-0.5582749,53.2442972,E38000100,LN1,West Lindsey,Midlands
+The Princess Alexandra Hospital,the_princess_alexa,RQQG0,The Princess Alexandra Hospital,CM20 1QX,England,0.0858092,51.77104989999999,E38000197,CM20,Harlow,East of England
+University Hospitals Birmingham NHS Foundation Trust,university_hospitaf,RRK02,Queen Elizabeth University Hospital Birmingham,B15 2GW,England,-1.9429313,52.4512054,E38000220,B15,Birmingham,Midlands
+University Hospitals Birmingham NHS Foundation Trust,university_hospitaf,RRL02,Queen Elizabeth University Hospital Birmingham,B15 2GW,England,-1.9429313,52.4512054,E38000220,B15,Birmingham,Midlands
+Wirral University Teaching Hospital NHFT,wirral_university,RRL14,Wirral University Teaching Hospital NHFT,CH49 5PE,England,-3.094562,53.37042899999999,E38000208,CH49,Wirral,North West
+University Hospitals Birmingham NHS Foundation Trust,NA,RR002,Queen Elizabeth University Hospital Birmingham,B15 2GW,England,-1.9429313,52.4512054,E38000220,B15,Birmingham,Midlands
+Belfast,belfast,RRRR1,Belfast,BT9 7AB,Northern Ireland,-5.9441331,54.5872059,,BT9,Belfast,Northern Ireland
+Leicestershire Partnership NHS Trust,leicestershire_par,RT5KP,Leicestershire Partnership NHS Trust,LE3 9DZ,England,-1.1837338,52.654588,E38000097,LE3,Leicester,Midlands
+Leicestershire Partnership NHS Trust,leicestershire_par,RTGKP,Leicestershire Partnership NHS Trust,LE3 9DZ,England,-1.1837338,52.654588,E38000097,LE3,Leicester,Midlands
+George Eliot Hospital,NA,RTL01,George Eliot Hospital,CV10 7DJ,England,-1.4760659,52.5118749,E38000195,CV10,Nuneaton & Bedworth,Midlands
+Gloucestershire Health and Care NHS Foundation Trust,gloucestershire_he,RTQ04,Gloucestershire Health and Care NHS Foundation Trust,GL3 4AW,England,-2.1763204,51.8472539,E38000062,GL3,Gloucester,South West
+Gloucestershire Health and Care NHS Foundation Trust,gloucestershire_he,RTQ21,Gloucestershire Health and Care NHS Foundation Trust,GL3 4AW,England,-2.1763204,51.8472539,E38000062,GL3,Gloucester,South West
+Gloucestershire Health and Care NHS Foundation Trust,gloucestershire_he,RTQ85,Gloucestershire Health and Care NHS Foundation Trust,GL3 4AW,England,-2.1763204,51.8472539,E38000062,GL3,Gloucester,South West
+Gloucestershire Health and Care NHS Foundation Trust,gloucestershire_he,RTQ87,Gloucestershire Health and Care NHS Foundation Trust,GL3 4AW,England,-2.1763204,51.8472539,E38000062,GL3,Gloucester,South West
+South Tees Hospital NHS Foundation Trust,south_tees_hospita,RTRTA,South Tees Hospital NHS Foundation Trust,TS4 3BW,England,-1.2172468,54.5526198,E38000162,TS4,Middlesbrough,North East and Yorkshire
+North West Boroughs Healthcare NHSFT,north_west_borough,RTV33,North West Boroughs Healthcare NHSFT,WA2 8WA,England,-2.608387,53.4286247,E38000194,WA2,Warrington,North West
+East Kent Hospitals NHSFT,east_kent_hospital,RV001,William Harvey Hospital (Ashford),TN24 0LZ,England,0.9162230491638184,51.14148712158203,E38000002,TN24,Ashford,South East
+Humber Teaching NHS Foundation Trust,humber_teaching_nh,RV901,Humber Teaching NHS Foundation Trust,YO25 9LH,England,-0.4752873,53.9896444,E38000052,YO25,East Riding of Yorkshire,North East and Yorkshire
+North West Boroughs Healthcare NHSFT,north_west_borough,RVT33,North West Boroughs Healthcare NHSFT,WA2 8WA,England,-2.608387,53.4286247,E38000194,WA2,Warrington,North West
+East Kent Hospitals NHSFT,east_kent_hospital,RVV00,Queen Elizabeth The Queen Mother Hospital,CT9 4AN,England,1.3893986940383911,51.3780517578125,E38000184,CT9,Kent,South East
+Lancashire & South Cumbria NHS Foundation Trust,lancashire__south,RW5JJ,Royal Preston Hospital,PR2 9HT,England,-2.7040145,53.7908668,E38000227,PR2,Preston,North West
+Warrington and Halton Teaching Hospitals NHS Foundation Trust,warrington_and_hal,RWHHH,Warrington and Halton Teaching Hospitals NHS Foundation Trust,WA5 1QG,England,-2.6108215,53.3940422,E38000194,WA5,Warrington,North West
+The Princess Alexandra Hospital,the_princess_alexa,RWQG0,The Princess Alexandra Hospital,CM20 1QX,England,0.0858092,51.77104989999999,E38000197,CM20,Harlow,East of England
+Hertfordshire Partnership NHS Foundation Trust,hertfordshire_part,RWR99,Hertfordshire Partnership NHS Foundation Trust,AL3 5TQ,England,-0.3451309,51.7625796,E38000079,AL3,St Albans,East of England
+Leicester Royal Infirmary,university_hospitaj,RWWAA,Leicester Royal Infirmary,LE1 5WW,England,-1.1354407,52.6257466,E38000097,LE1,Leicester,Midlands
+Calderdale and Huddersfield NHS Trust,calderdale_and_hud,RWy01,Calderdale and Huddersfield NHS Trust,HD3 3EA,England,-1.8189892,53.65571629999999,E38000064,HD3,Kirklees,North East and Yorkshire
+Sussex Partnership NHS Foundation Trust,sussex_partnership,RX219,Sussex Partnership NHS Foundation Trust,BN11 1RY,England,-0.3720101,50.8125717,E38000213,BN11,Worthing,South East
+Cheshire and Wirral Partnership NHSFT,cheshire_and_wirra,RXADT,Cheshire and Wirral Partnership NHSFT,CH2 1BQ,England,-2.8998958,53.2120533,E38000196,CH2,Cheshire West and Chester,North West
+Cheshire and Wirral Partnership NHSFT,cheshire_and_wirra,RXADY,Cheshire and Wirral Partnership NHSFT,CH2 1BQ,England,-2.8998958,53.2120533,E38000196,CH2,Cheshire West and Chester,North West
+Royal Preston Hospital,royal_preston_hosp,RXB02,Royal Preston Hospital,PR2 9HT,England,-2.7069534,53.7903928,E38000227,PR2,Preston,North West
+The Queen Elizabeth Hospital King's Lynn NHS Foundation Trust,the_queen_elizabet,RXC70,The Queen Elizabeth Hospital King's Lynn NHS Foundation Trust,PE30 4ET,England,0.4462463,52.7564633,E38000203,PE30,West Norfolk,East of England
+Rotherham Doncaster and South Humber NHSFT,rotherham_doncaste,RXE07,Rotherham Doncaster and South Humber NHSFT,DN4 8QN,England,-1.1459607,53.4948158,E38000044,DN4,Doncaster,North East and Yorkshire
+Rotherham Doncaster and South Humber NHSFT,rotherham_doncaste,RXE92,Rotherham Doncaster and South Humber NHSFT,DN4 8QN,England,-1.1459607,53.4948158,E38000044,DN4,Doncaster,North East and Yorkshire
+Nottingham University Hosptials NHS Trust,nottingham_univers,RXICC,Nottingham University Hosptials NHS Trust,NG5 1PB,England,-1.1570212,52.9904528,E38000132,NG5,Nottingham,Midlands
+Nottingham University Hosptials NHS Trust,nottingham_univers,RXRXA,Nottingham University Hosptials NHS Trust,NG5 1PB,England,-1.1570212,52.9904528,E38000132,NG5,Nottingham,Midlands
+Birmingham and Solihull Mental Health NHSFT,birmingham_and_sol,RXTC1,Birmingham and Solihull Mental Health NHSFT,B24 9SA,England,-1.8338131,52.5160053,E38000220,B24,Birmingham,Midlands
+Surrey and Borders partnership NHSFT,surrey_and_borders,RXX10,Surrey and Borders partnership NHSFT,KT22 7AD,England,-0.3351251,51.297952,E38000177,KT22,Mole Valley,South East
+Kent and Medway NHS and Social Care Partnership Trust,kent_and_medway_nh,RXY6J,Kent and Medway NHS and Social Care Partnership Trust,ME7 4JL,England,0.5582043,51.3796634,E38000104,ME7,Medway,South East
+Lincolnshire Community Health Services NHS Trust,lincolnshire_commu,RY5HQ,Lincolnshire Community Health Services NHS Trust,LN5 7JH,England,-0.5241828,53.2265336,E38000100,LN5,Lincoln,Midlands
+Leeds community healthcare NHSFT,leeds_community_he,RY651,Leeds community healthcare NHSFT,LS12 5SG,England,-1.6011659,53.7824956,E38000225,LS12,Leeds,North East and Yorkshire
+Hounslow and Richmond Community Healthcare NHS Trust,hounslow_and_richm,RY901,Hounslow and Richmond Community Healthcare NHS Trust,TW11 8HU,England,-0.3260077,51.4274856,E38000140,TW11,Richmond upon Thames,London
+Coventry & Warwickshire Partnership Trust,coventry__warwicks,RYGHQ,Caludon Centre,CV2 2TE,England,-1.4452332,52.4225547,E38000038,CV2,Coventry,Midlands
+The Royal Marsden NHS Trust,the_royal_marsden,RYP01,The Royal Marsden NHS Trust,SW3 6JJ,England,-0.1727977,51.4908714,E38000202,SW3,Kensington and Chelsea,London
+NHS Lothian,nhs_lothian,S134H,Royal Infirmary Of Edinburgh At Little France,EH16 4SA,Scotland,-3.1347719,55.9218084,S08000024,EH16,Edinburgh,Scotland
+NHS Lothian,nhs_lothian,S214H,Royal Infirmary Of Edinburgh At Little France,EH16 4SA,Scotland,-3.1347719,55.9218084,S08000024,EH16,Edinburgh,Scotland
+NHS Lothian,nhs_lothian,S341H,Royal Infirmary Of Edinburgh At Little France,EH16 4SA,Scotland,-3.1347719,55.9218084,S08000024,EH16,Edinburgh,Scotland
+NHS Lothian,nhs_lothian,SL116,Western General Hospital,EH4 2XU,Scotland,-3.2338808,55.9621052,S08000024,EH4,Edinburgh,Scotland
+Mid and South Essex University Hospitals Group,mid_and_south_esse,TAJ01,Southend Hospital,SS0 0RY,England,0.6877328,51.55386,E38000168,SS0,Southend-on-Sea,East of England
+Medway Community Healthcare,medway_community_h,VLXF4,Medway Community Healthcare,ME1 3QY,England,0.5163534,51.3770708,E38000237,ME1,Medway,NA
 University Hospitals of Leicester,university_hospitaj,TWEAA,Leicester Royal Infirmary,LE1 5WW,England,-1.1348028,52.6278166,E38000097,LE1,Leicester,Midlands
 Bronglais General Hospital,bronglais_general,WB2AJ,Bronglais General Hospital,SY23 1ER,Wales,-4.0711821,52.4164121,W11000025,SY23,Ceredigion,Wales
 Prince Philip Hospital,prince_philip_hosp,WB3AL,Prince Philip Hospital,SA14 8QF,Wales,-4.134687,51.6922205,W11000025,SA14,Carmarthenshire,Wales
@@ -6,6 +107,7 @@ Withybush General Hospital,withybush_general,WF1BL,Withybush General Hospital,SA
 Glan Clwyd Hospital,glan_clwyd_hospita,7A1A1,Ysbyty Glan Clwyd,LL18 5UJ,Wales,-3.4971896,53.27265509999999,W11000023,LL18,Conwy,Wales
 Wrexham Maelor Hospital,wrexham_maelor_hos,7A1A4,Wrexham Maelor Hospital,LL13 7TD,Wales,-3.0101803,53.0461734,W11000023,LL13,Wrexham,Wales
 Wrexham Maelor Hospital,wrexham_maelor_hos,7A1A7,Chirk Community Hospital,LL14 5LN,Wales,-3.0497713,52.94306479999999,W11000023,LL14,Wrexham,Wales
+Glan Clwyd Hospital,glan_clwyd_hospita,7A1A8,Colwyn Bay Community Hospital,LL29 8AY,Wales,-3.7101306,53.2879873,W11000023,LL29,Conwy,Wales
 Glan Clwyd Hospital,glan_clwyd_hospita,7A1A9,Denbigh Community Hospital,LL16 3ES,Wales,-3.4094959,53.1860328,W11000023,LL16,Denbighshire,Wales
 Glan Clwyd Hospital,glan_clwyd_hospita,7A1AB,Holywell Community Hospital,CH8 7TZ,Wales,-3.215942,53.2694319,W11000023,CH8,Flintshire,Wales
 Wrexham Maelor Hospital,wrexham_maelor_hos,7A1AD,Mold Community Hospital,CH7 1RH,Wales,-3.1470377,53.1696683,W11000023,CH7,Flintshire,Wales
@@ -98,7 +200,7 @@ Airedale General Hospital,airedale_general_h,RCF22,Airedale General Hospital,BD2
 Sheffield Children's NHS Foundation Trust,sheffield_children,RCUEF,Sheffield Children's Hospital,S10 2TH,England,-1.4895067,53.3804284,E38000146,S10,Sheffield,North East and Yorkshire
 The Queen Elizabeth Hospital King's Lynn NHS Foundation Trust,the_queen_elizabet,RCX70,The Queen Elizabeth Hospital,PE30 4ET,England,0.4462463,52.7564633,E38000203,PE30,West Norfolk,East of England
 Royal United Hospitals Bath NHSFT,royal_united_hospi,RD130,Royal United Hospitals,BA1 3NG,England,-2.3907418,51.3918072,E38000009,BA1,Bath and North East Somerset,South West
-Milton Keynes University Hospital,milton_keynes_univ,RD816,Milton Keynes Hospital,MK6 5LD,England,-0.7357762,52.0269973,E38000107,MK6,Milton Keynes,East of England
+Milton Keynes University Hospital,milton_keynes_univ,RD816,Milton Keynes Hospital,MK6 5LD,England,-0.7351835999999999,52.0280676,E38000107,MK6,Milton Keynes,East of England
 Basildon and Thurrock University Hospitals NHS,basildon_and_thurr,RDDH0,Basildon University Hospital,SS16 5NL,England,0.4528707,51.5587488,E38000007,SS16,Basildon,East of England
 Ipswich Hospital,ipswich_hospital,RDE03,Ipswich Hospital,IP4 5PD,England,1.1981153,52.0579075,E38000086,IP4,Ipswich,East of England
 East Suffolk and North Essex NHFT,east_suffolk_and_n,RDEE4,Colchester General Hospital,CO4 5JL,England,0.8991194999999998,51.9102689,E38000117,CO4,Colchester,East of England
@@ -211,7 +313,7 @@ Southmead Hospital,southmead_hospital,RVJ01,Southmead Hospital,BS10 5NB,England,
 University Hospitals Bristol NHFT,university_hospitag,RVN3Q,Blackberry Hill Hospital,BS16 2EW,England,-2.5406274,51.48274199999999,E38000222,BS16,Bristol,South West
 Epsom & St Helier NHSFT,epsom__st_helier_n,RVR05,St Helier Hospital,SM5 1AA,England,-0.184798,51.3804058,E38000179,SM5,Sutton,London
 East Kent Hospitals NHSFT,east_kent_hospital,RVV01,William Harvey Hospital (Ashford),TN24 0LZ,England,0.9144713,51.1414328,E38000002,TN24,Ashford,South East
-East Kent Hospitals NHSFT,east_kent_hospital,RVV09,Queen Elizabeth The Queen Mother Hospital,NA,England,1.3888717,51.3768988,NA,NA,NA,NA
+East Kent Hospitals NHSFT,east_kent_hospital,RVV09,Queen Elizabeth The Queen Mother Hospital,CT9 4AN,England,1.3893986940383911,51.3780517578125,E38000184,CT9,Kent,South East
 East Kent Hospitals NHSFT,east_kent_hospital,RVVKC,Kent And Canterbury Hospital,CT1 3NG,England,1.0870102,51.2656432,E38000029,CT1,Kent,South East
 University Hospital of North Tees,university_hospitab,RVWAE,University Hospital Of North Tees,TS19 8PE,England,-1.3472709,54.58249679999999,E38000075,TS19,Stockton-on-Tees,North East and Yorkshire
 Southport and Ormskirk Hospital NHS Trust,southport_and_orms,RVY01,Southport And Formby District General Hospital,PR8 6PN,England,-2.9783424,53.6338135,E38000170,PR8,Sefton,North West
@@ -235,7 +337,7 @@ Worcestershire Acute Hospitals NHS Trust,worcestershire_acu,RWP50,Worcestershire
 Devon Partnership NHS Trust,devon_partnership,RWV62,Wonford House,EX2 5AF,England,-3.5062778,50.7153144,E38000230,EX2,Exeter,South West
 Warrington and Halton Teaching Hospitals NHS Foundation Trust,warrington_and_hal,RWWWH,Warrington Hospital,WA5 1QG,England,-2.6100393,53.39386820000001,E38000194,WA5,Warrington,North West
 Calderdale and Huddersfield NHS Trust,calderdale_and_hud,RWY01,Huddersfield Royal Infirmary,HD3 3EA,England,-1.8157482,53.6552958,E38000064,HD3,Kirklees,North East and Yorkshire
-Nottingham University Hosptials NHS Trust,nottingham_univers,RX1CC,Nottingham University Hospitals Nhs Trust - City Campus,NG5 1PB,England,-1.1570212,52.9904528,E38000132,NG5,Nottingham,Midlands
+Nottingham University Hosptials NHS Trust,nottingham_univers,RX1CC,Nottingham University Hospitals Nhs Trust - City Campus,NG5 1PB,England,-1.1604503,52.9908758,E38000132,NG5,Nottingham,Midlands
 Nottingham University Hosptials NHS Trust,nottingham_univers,RX1RA,Nottingham University Hospitals Nhs Trust - Queen's Medical Centre Campus,NG7 2UH,England,-1.1850038,52.9435955,E38000132,NG7,Nottingham,Midlands
 "Cumbria, Northumberland, Tyne and Wear NHS Foundation Trust",cumbria_northumber,RX4E4,St Nicholas Hospital,NE3 3XT,England,-1.6348937,55.0062898,E38000212,NE3,Newcastle,North East and Yorkshire
 "Tees, Esk and Wear Valleys NHS Foundation Trust",tees_esk_and_wear,RX301,Tees,DL2 2TS,England,NA,54.54356766,E38000042,DL2,Darlington,North East and Yorkshire

@@ -288,7 +288,7 @@ postcode_lookup = postcode_lookup %>%
 #
 postcode_country = postcode_lookup %>% 
   mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% 
-  select(pcds, country, ccg, NHSER19NM) 
+  select(pcds, country, ccg) 
 
 combined_all = ccp_combined_2 %>% 
   left_join(postcode_country, by = c('postcode' = 'pcds')) %>% 
@@ -322,12 +322,12 @@ combined_all = combined_all %>%
          lon = ifelse(dag_id == 'RW5JJ', -2.7040145, lon),
          lat = ifelse(dag_id == 'RW5JJ', 53.7908668, lat),
          ccg = ifelse(dag_id == 'RW5JJ', 'E38000227', ccg),
-         place_name = ifelse(dag_id == 'RVV00' , 'Queen Elizabeth The Queen Mother Hospital', place_name),
-         postcode = ifelse(dag_id == 'RVV00', 'CT9 4AN', postcode),
-         country = ifelse(dag_id == 'RVV00', 'England', country),
-         lon = ifelse(dag_id == 'RVV00', 1.3893986940383911, lon),
-         lat = ifelse(dag_id == 'RVV00', 51.3780517578125, lat),
-         ccg = ifelse(dag_id == 'RVV00', 'E38000184', ccg),
+         place_name = ifelse(dag_id == 'RVV00' | dag_id == 'RVV09', 'Queen Elizabeth The Queen Mother Hospital', place_name),
+         postcode = ifelse(dag_id == 'RVV00' | dag_id == 'RVV09', 'CT9 4AN', postcode),
+         country = ifelse(dag_id == 'RVV00' | dag_id == 'RVV09', 'England', country),
+         lon = ifelse(dag_id == 'RVV00' | dag_id == 'RVV09', 1.3893986940383911, lon),
+         lat = ifelse(dag_id == 'RVV00' | dag_id == 'RVV09', 51.3780517578125, lat),
+         ccg = ifelse(dag_id == 'RVV00' | dag_id == 'RVV09', 'E38000184', ccg),
          place_name = ifelse(dag_id == 'RK590', 'Derriford Hospital', place_name),
          postcode = ifelse(dag_id == 'RK590', 'PL6 8DH', postcode),
          country = ifelse(dag_id == 'RK590', 'England', country),
@@ -352,12 +352,12 @@ combined_all = combined_all %>%
          lon = ifelse(dag_id == 'RV001', 0.91622304916381836, lon),
          lat = ifelse(dag_id == 'RV001', 51.141487121582031, lat),
          ccg = ifelse(dag_id == 'RV001', 'E38000002', ccg),
-         place_name = ifelse(dag_id == 'S341H', 'Royal Infirmary Of Edinburgh At Little France', place_name),
-         postcode = ifelse(dag_id == 'S341H', 'EH16 4SA', postcode),
-         country = ifelse(dag_id == 'S341H', 'Scotland', country),
-         lon = ifelse(dag_id == 'S341H', -3.1347719, lon),
-         lat = ifelse(dag_id == 'S341H', 55.9218084, lat),
-         ccg = ifelse(dag_id == 'S341H', 'S08000024', ccg),
+         place_name = ifelse(dag_id == 'S341H' | dag_id == 'S134H' | dag_id == 'S214H', 'Royal Infirmary Of Edinburgh At Little France', place_name),
+         postcode = ifelse(dag_id == 'S341H' | dag_id == 'S134H' | dag_id == 'S214H', 'EH16 4SA', postcode),
+         country = ifelse(dag_id == 'S341H' | dag_id == 'S134H' | dag_id == 'S214H', 'Scotland', country),
+         lon = ifelse(dag_id == 'S341H' | dag_id == 'S134H' | dag_id == 'S214H', -3.1347719, lon),
+         lat = ifelse(dag_id == 'S341H' | dag_id == 'S134H' | dag_id == 'S214H', 55.9218084, lat),
+         ccg = ifelse(dag_id == 'S341H' | dag_id == 'S134H' | dag_id == 'S214H', 'S08000024', ccg),
          place_name = ifelse(dag_id == 'RYGHQ', 'Caludon Centre', place_name),
          postcode = ifelse(dag_id == 'RYGHQ', 'CV2 2TE', postcode),
          country = ifelse(dag_id == 'RYGHQ', 'England', country),
@@ -405,9 +405,52 @@ combined_all = combined_all %>%
          country = ifelse(dag_id == 'TAJ01', 'England', country),
          lon = ifelse(dag_id == 'TAJ01', 0.6877328, lon),
          lat = ifelse(dag_id == 'TAJ01', 51.55386, lat),
-         ccg = ifelse(dag_id == 'TAJ01', 'E38000168', ccg))
+         ccg = ifelse(dag_id == 'TAJ01', 'E38000168', ccg),
+         place_name = ifelse(dag_id == 'aRVR05', 'St Helier Hospital', place_name),
+         postcode = ifelse(dag_id == 'aRVR05', 'SM5 1AA', postcode),
+         country = ifelse(dag_id == 'aRVR05', 'England', country),
+         lon = ifelse(dag_id == 'aRVR05', -0.184798, lon),
+         lat = ifelse(dag_id == 'aRVR05', 51.38041, lat),
+         ccg = ifelse(dag_id == 'aRVR05', 'E38000179', ccg),
+         place_name = ifelse(dag_id == 'R0A01' | dag_id == 'R0S02', 'Manchester Royal Infirmary', place_name),
+         postcode = ifelse(dag_id == 'R0A01' | dag_id == 'R0S02', 'M13 9WL', postcode),
+         country = ifelse(dag_id == 'R0A01' | dag_id == 'R0S02', 'England', country),
+         lon = ifelse(dag_id == 'R0A01' | dag_id == 'R0S02',-2.226157 , lon),
+         lat = ifelse(dag_id == 'R0A01' | dag_id == 'R0S02', 53.46287, lat),
+         ccg = ifelse(dag_id == 'R0A01' | dag_id == 'R0S02', 'E38000217', ccg),
+         place_name = ifelse(dag_id == 'REJ01', 'Royal Stoke University Hospital', place_name),
+         postcode = ifelse(dag_id == 'REJ01', 'ST4 6QG', postcode),
+         country = ifelse(dag_id == 'REJ01', 'England', country),
+         lon = ifelse(dag_id == 'REJ01', -2.21294, lon),
+         lat = ifelse(dag_id == 'REJ01', 53.00381, lat),
+         ccg = ifelse(dag_id == 'REJ01', 'E38000175', ccg),
+         place_name = ifelse(dag_id == 'RRK02' | dag_id == 'RRL02' | dag_id == 'RR002', 'Queen Elizabeth University Hospital Birmingham', place_name),
+         postcode = ifelse(dag_id == 'RRK02' | dag_id == 'RRL02' | dag_id == 'RR002', 'B15 2GW', postcode),
+         country = ifelse(dag_id == 'RRK02' | dag_id == 'RRL02' | dag_id == 'RR002', 'England', country),
+         lon = ifelse(dag_id == 'RRK02' | dag_id == 'RRL02' | dag_id == 'RR002', -1.9429313, lon),
+         lat = ifelse(dag_id == 'RRK02' | dag_id == 'RRL02' | dag_id == 'RR002', 52.4512054, lat),
+         ccg = ifelse(dag_id == 'RRK02' | dag_id == 'RRL02' | dag_id == 'RR002', 'E38000220', ccg),
+         place_name = ifelse(dag_id == 'VLXF4', 'Medway Community Healthcare', place_name),
+         postcode = ifelse(dag_id == 'VLXF4', 'ME1 3QY', postcode),
+         country = ifelse(dag_id == 'VLXF4', 'England', country),
+         lon = ifelse(dag_id == 'VLXF4', 0.5163534, lon),
+         lat = ifelse(dag_id == 'VLXF4', 51.3770708, lat),
+         ccg = ifelse(dag_id == 'VLXF4', 'E38000237', ccg),
+         place_name = ifelse(dag_id == 'VLXF4', 'Medway Community Healthcare', place_name),
+         postcode = ifelse(dag_id == 'VLXF4', 'ME1 3QY', postcode),
+         country = ifelse(dag_id == 'VLXF4', 'England', country),
+         lon = ifelse(dag_id == 'VLXF4', 0.5163534, lon),
+         lat = ifelse(dag_id == 'VLXF4', 51.3770708, lat),
+         ccg = ifelse(dag_id == 'VLXF4', 'E38000237', ccg),
+         place_name = ifelse(dag_id == 'RRRR1', 'Belfast', place_name),
+         postcode = ifelse(dag_id == 'RRRR1', 'BT9 7AB', postcode),
+         country = ifelse(dag_id == 'RRRR1', 'Northern Ireland', country),
+         lon = ifelse(dag_id == 'RRRR1', -5.9441331, lon),
+         lat = ifelse(dag_id == 'RRRR1', 54.5872059, lat),
+         ccg = ifelse(dag_id == 'RRRR1', '', ccg))
 
 no_location = combined_all %>% filter(is.na(postcode))
+# no_location = combined_all2 %>% filter(is.na(postcode)) %>% distinct(dag_id, .keep_all = T)
 
 #Now lets add a city to postcode
 postcode_to_city = read_csv('location_data/postcode_city_district.csv') %>% 
