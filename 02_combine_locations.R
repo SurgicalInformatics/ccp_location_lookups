@@ -86,7 +86,7 @@ england_oa_populations = read_csv('location_data/eng_oa_to_population.csv') %>% 
 
 scotland_oa_populations = read_csv('location_data/KS101SC.csv') %>% rename(oa11 = X1,
                                                                            total_pop_scot = `All people`) %>% 
-                                                                    select(oa11, total_pop_scot)
+  select(oa11, total_pop_scot)
 
 # scotland_imd_20_dz_lookup = read_excel('location_data/sco_datazone_imd20.xlsx', sheet = 3) %>% rename(oa11 = DZ,
 #                                                                                                       simd20_rank = SIMD2020v2_Rank)
@@ -99,9 +99,9 @@ postcode_lookup_tds = read_csv('location_data/NSPL_FEB_2020_UK.csv') %>%
   left_join(scotland_oa_populations, by = 'oa11') %>% 
   left_join(england_oa_populations, by = 'oa11') %>% 
   mutate(country = ifelse(startsWith(ccg, 'S0'), 'Scotland', NA),
-  country = ifelse(startsWith(ccg, 'E'), 'England', country),
-  country = ifelse(startsWith(ccg, 'W1'), 'Wales', country),
-  country = ifelse(startsWith(ccg, 'ZC'), 'Northern Ireland', country)) %>% 
+         country = ifelse(startsWith(ccg, 'E'), 'England', country),
+         country = ifelse(startsWith(ccg, 'W1'), 'Wales', country),
+         country = ifelse(startsWith(ccg, 'ZC'), 'Northern Ireland', country)) %>% 
   mutate(total_pop = ifelse(country == 'Scotland', total_pop_scot, NA),
          total_pop = ifelse(country == 'England', total_pop_eng, total_pop)) %>% select(-total_pop_eng, -total_pop_scot) %>% 
   filter(!is.na(total_pop))
