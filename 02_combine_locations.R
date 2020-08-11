@@ -88,8 +88,10 @@ scotland_oa_populations = read_csv('location_data/KS101SC.csv') %>% rename(oa11 
                                                                            total_pop_scot = `All people`) %>% 
                                                                     select(oa11, total_pop_scot)
 
-scotland_imd_20_dz_lookup = read_excel('location_data/sco_datazone_imd20.xlsx', sheet = 3) %>% rename(oa11 = DZ,
-                                                                                                      simd20_rank = SIMD2020v2_Rank)
+# scotland_imd_20_dz_lookup = read_excel('location_data/sco_datazone_imd20.xlsx', sheet = 3) %>% rename(oa11 = DZ,
+#                                                                                                       simd20_rank = SIMD2020v2_Rank)
+
+nhs_eng_region_ccg = read_csv('location_data/nhs_regions_to_ccg.csv')
 
 #Townsend lookup
 postcode_lookup_tds = read_csv('location_data/NSPL_FEB_2020_UK.csv') %>% 
@@ -171,6 +173,7 @@ nhs_ods_list %>% select(`ODS code`, `ODS Name`, Postcode) %>%
 look_up_all = rbind(wales_list, ni_list, hosp_2_list, scotland_list) %>% 
   mutate(search_name = paste0(place_name, ', ', postcode),
          org_code = ifelse(org_code == 'RHM00', 'RHM00', org_code)) #%>% 
+
 #  distinct(org_code, .keep_all = T)
 
 #Add a row for RMH
@@ -282,9 +285,10 @@ postcode_lookup = postcode_lookup %>%
          country = ifelse(startsWith(ccg, 'ZC'), 'Northern Ireland', country)) 
 #rename(imd_average_postcodes = imd_average)
 
+#
 postcode_country = postcode_lookup %>% 
   mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% 
-  select(pcds, country, ccg) 
+  select(pcds, country, ccg, NHSER19NM) 
 
 combined_all = ccp_combined_2 %>% 
   left_join(postcode_country, by = c('postcode' = 'pcds')) %>% 
@@ -405,8 +409,6 @@ combined_all = combined_all %>%
 
 no_location = combined_all %>% filter(is.na(postcode))
 
-#combined_all %>% filter(is.na(postcode)) -> test
-
 #Now lets add a city to postcode
 postcode_to_city = read_csv('location_data/postcode_city_district.csv') %>% 
   clean_names() %>% 
@@ -513,12 +515,20 @@ combined_all = combined_all %>%
 #   arrange(desc(n)) -> ccg_list_uk
 
 #Join ccp ids in 
-rm(list=setdiff(ls(), c('ccp_ids', 'combined_all')))
+rm(list=setdiff(ls(), c('ccp_ids', 'combined_all', 'nhs_eng_region_ccg')))
 
 ccp_dag_unlabelled = ccp_ids %>% 
   distinct(dag_id, .keep_all = T) %>% 
   select(dag_id, redcap_data_access_group) %>% 
   rename(redcap_data_access_group_unlabelled = redcap_data_access_group)
+
+#Now lets add region - England region/ Scotland/ Wales/ NI
+#now join in NHS region
+combined_all = combined_all %>% left_join(nhs_eng_region_ccg %>% select(CCG19CD, NHSER19NM), by = c('ccg' = 'CCG19CD'))
+
+combined_all = combined_all %>% 
+  rename(nhs_region = NHSER19NM) %>%
+  mutate(nhs_region = ifelse(country == 'England', nhs_region, country))
 
 #
 combined_all = combined_all %>% 
@@ -529,6 +539,8 @@ combined_all = combined_all %>%
 combined_all_no_imd = combined_all %>% 
   select(-contains('imd'),
          -contains('tds'))
+
+
 
 #write a csv
 save_date = Sys.Date() %>% format('%d-%B-%Y')
