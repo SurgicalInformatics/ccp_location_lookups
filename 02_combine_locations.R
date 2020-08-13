@@ -565,7 +565,8 @@ combined_all = combined_all %>% left_join(nhs_eng_region_ccg %>% select(CCG19CD,
 
 combined_all = combined_all %>% 
   rename(nhs_region = NHSER19NM) %>%
-  mutate(nhs_region = ifelse(country == 'England', nhs_region, country))
+  mutate(nhs_region = ifelse(country == 'England', nhs_region, country)) %>% 
+  mutate(nhs_region = ifelse(dag_id == 'VLXF4', 'South East', nhs_region))
 
 #
 combined_all = combined_all %>% 
