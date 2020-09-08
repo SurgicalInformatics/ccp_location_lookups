@@ -103,7 +103,7 @@ postcode_lookup_tds = read_csv('location_data/NSPL_FEB_2020_UK.csv') %>%
          country = ifelse(startsWith(ccg, 'W1'), 'Wales', country),
          country = ifelse(startsWith(ccg, 'ZC'), 'Northern Ireland', country)) %>% 
   mutate(total_pop = ifelse(country == 'Scotland', total_pop_scot, NA),
-         total_pop = ifelse(country == 'England', total_pop_eng, total_pop)) %>% select(-total_pop_eng, -total_pop_scot) %>% 
+         total_pop = ifelse(country == 'England' | country == 'Wales' , total_pop_eng, total_pop)) %>% select(-total_pop_eng, -total_pop_scot) %>%
   filter(!is.na(total_pop))
 
 

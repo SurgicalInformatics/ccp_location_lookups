@@ -29,7 +29,7 @@ Mid and South Essex University Hospitals Group,mid_and_south_esse,RAT01,Southend
 Wirral University Teaching Hospital NHFT,wirral_university,RBLI4,Wirral University Teaching Hospital NHFT,CH49 5PE,England,-3.094562,53.37042899999999,E38000208,CH49,Wirral,North West
 Bedfordshire Hospitals NHS Foundation Trust,bedfordshire_hospi,RC112,Bedfordshire Hospitals NHS Foundation Trust,MK42 9DJ,England,-0.4712227,52.1286233,E38000010,MK42,Bedford,East of England
 Poole Hospital NHS Trust,poole_hospital_nhs,RD300,Poole Hospital NHS Trust,BH15 2JB,England,-1.9737732,50.7213346,E38000045,BH15,Poole,South West
-Harrogate District Hospital,harrogate_district,RDC01,Harrogate District Hospital,NA,NA,-85.28950130000001,35.0485516,NA,NA,NA,NA
+Harrogate District Hospital,harrogate_district,RDC01,Harrogate District Hospital,HG2 7SX,England,-1.5175624,53.9937105,E38000073,HG2,Harrogate,North East and Yorkshire
 Sussex Community NHSFT,sussex_community_n,RDR05,Brighton General Hospital,BN2 3EW,England,0.1145,50.831,E38000021,BN2,Brighton and Hove,South East
 University Hospitals of North Midlands NHS Trust,university_hospitak,REJ01,Royal Stoke University Hospital,ST4 6QG,England,-2.21294,53.00381,E38000175,ST4,Staffordshire,Midlands
 Aintree University Hospital,aintree_university,REM20,Aintree University Hospital,L9 7AL,England,-2.9317603,53.4656706,E38000101,L9,Liverpool,North West
@@ -170,7 +170,7 @@ Northwick Park,northwick_park,R1K01,Northwick Park Hospital,HA1 3UJ,England,-0.3
 Northwick Park,northwick_park,R1K02,Central Middlesex Hospital,NW10 7NS,England,-0.2686757,51.53096499999999,E38000020,NW10,Brent,London
 London North West University Healthcare NHS Trust,london_north_west,R1K03,St Mark's Hospital,HA1 3UJ,England,-0.3202336,51.5759194,E38000020,HA1,Harrow,London
 London North West University Healthcare NHS Trust,london_north_west,R1K04,Ealing Hospital,UB1 3HW,England,-0.3456642,51.5075825,E38000048,UB1,Ealing,London
-Royal Surrey NHSFT,royal_surrey_nhsft,RA201,Royal Surrey County Hospital,GU2 7XX,England,-0.6085178,51.2411243,E38000214,GU2,Guildford,South East
+Royal Surrey NHSFT,royal_surrey_nhsft,RA201,Royal Surrey County Hospital,GU2 7XX,England,-0.6083288,51.2405133,E38000214,GU2,Guildford,South East
 Yeovil District Hospital,yeovil_district_ho,RA430,Yeovil District Hospital,BA21 4AT,England,-2.6343106,50.9447524,E38000150,BA21,South Somerset,South West
 Bristol Royal Infirmary,bristol_royal_infi,RA701,Bristol Royal Infirmary,BS2 8HW,England,-2.5967856,51.458344,E38000222,BS2,Bristol,South West
 University Hospitals Bristol NHFT,university_hospitaf,RA707,St Michael's Hospital,BS2 8EG,England,-2.6,51.4591667,E38000222,BS2,Bristol,South West
@@ -220,7 +220,7 @@ Royal Liverpool & Broadgreen University Hospitals NHSFT,royal_liverpool__b,REMRQ
 Clatterbridge Cancer Centre NHSFT,clatterbridge_canc,REN20,The Clatterbridge Cancer Centre (Wirral),CH63 4JY,England,-3.0253293,53.3327713,E38000208,CH63,Wirral,North West
 Liverpool Women's Hospital,liverpool_womens_h,REP01,Liverpool Women's Nhs Foundation Trust,L8 7SS,England,-2.959683,53.398919,E38000101,L8,Liverpool,North West
 Barking Havering and Redbridge University NHST,barking_havering_a,RF4QH,Queen's Hospital,RM7 0AG,England,0.1790309,51.5689553,E38000077,RM7,Havering,London
-Barnsley Hospital NHS Foundation Trust,barnsley_hospital,RFFAA,Barnsley Hospital,S75 2PY,England,-1.497642,53.5590285,E38000006,S75,Barnsley,North East and Yorkshire
+Barnsley Hospital NHS Foundation Trust,barnsley_hospital,RFFAA,Barnsley Hospital,S75 2EP,England,-1.4995888,53.5582693,E38000006,S75,Barnsley,North East and Yorkshire
 The Rotherham NHSFT,the_rotherham_nhsf,RFRPA,Rotherham Hospital,S60 2UD,England,-1.3425348,53.4142658,E38000141,S60,Rotherham,North East and Yorkshire
 Chesterfield Royal Hospital NHSFT,chesterfield_royal,RFSDA,Chesterfield Royal Hospital,S44 5BL,England,-1.3974218,53.2364336,E38000229,S44,Bolsover,Midlands
 Leeds and York Partnership NHS Foundation Trust,leeds_and_york_par,RGD05,The Mount,LS2 9LN,England,-1.559968,53.8045191,E38000225,LS2,Leeds,North East and Yorkshire
@@ -339,7 +339,7 @@ Worcestershire Acute Hospitals NHS Trust,worcestershire_acu,RWP50,Worcestershire
 Devon Partnership NHS Trust,devon_partnership,RWV62,Wonford House,EX2 5AF,England,-3.5062778,50.7153144,E38000230,EX2,Exeter,South West
 Warrington and Halton Teaching Hospitals NHS Foundation Trust,warrington_and_hal,RWWWH,Warrington Hospital,WA5 1QG,England,-2.6100393,53.39386820000001,E38000194,WA5,Warrington,North West
 Calderdale and Huddersfield NHS Trust,calderdale_and_hud,RWY01,Huddersfield Royal Infirmary,HD3 3EA,England,-1.8157482,53.6552958,E38000064,HD3,Kirklees,North East and Yorkshire
-Nottingham University Hosptials NHS Trust,nottingham_univers,RX1CC,Nottingham University Hospitals Nhs Trust - City Campus,NG5 1PB,England,-1.1570212,52.9904528,E38000132,NG5,Nottingham,Midlands
+Nottingham University Hosptials NHS Trust,nottingham_univers,RX1CC,Nottingham University Hospitals Nhs Trust - City Campus,NG5 1PB,England,-1.1604503,52.9908758,E38000132,NG5,Nottingham,Midlands
 Nottingham University Hosptials NHS Trust,nottingham_univers,RX1RA,Nottingham University Hospitals Nhs Trust - Queen's Medical Centre Campus,NG7 2UH,England,-1.1850038,52.9435955,E38000132,NG7,Nottingham,Midlands
 "Cumbria, Northumberland, Tyne and Wear NHS Foundation Trust",cumbria_northumber,RX4E4,St Nicholas Hospital,NE3 3XT,England,-1.6348937,55.0062898,E38000212,NE3,Newcastle,North East and Yorkshire
 "Tees, Esk and Wear Valleys NHS Foundation Trust",tees_esk_and_wear,RX301,Tees,DL2 2TS,England,NA,54.54356766,E38000042,DL2,Darlington,North East and Yorkshire
