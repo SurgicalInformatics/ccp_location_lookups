@@ -441,7 +441,13 @@ combined_all = combined_all %>%
          country = ifelse(dag_id == 'RRRR1', 'Northern Ireland', country),
          lon = ifelse(dag_id == 'RRRR1', -5.9441331, lon),
          lat = ifelse(dag_id == 'RRRR1', 54.5872059, lat),
-         ccg = ifelse(dag_id == 'RRRR1', '', ccg))
+         ccg = ifelse(dag_id == 'RRRR1', '', ccg),
+         place_name = ifelse(dag_id == 'RHX01', 'Royal Sussex County Hospital', place_name),
+         postcode = ifelse(dag_id == 'RHX01', 'BN2 5BE', postcode),
+         country = ifelse(dag_id == 'RHX01', 'England', country),
+         lon = ifelse(dag_id == 'RHX01', -0.1182958, lon),
+         lat = ifelse(dag_id == 'RHX01', 50.81935, lat),
+         ccg = ifelse(dag_id == 'RHX01', 'E38000021', ccg))
 
 no_location = combined_all %>% filter(is.na(postcode))
 # no_location = combined_all2 %>% filter(is.na(postcode)) %>% distinct(dag_id, .keep_all = T)
