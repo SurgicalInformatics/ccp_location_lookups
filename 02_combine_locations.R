@@ -73,6 +73,7 @@ register_google(api_key)
 #load in locations
 
 #First the file from ewen
+site = read_csv('location_data/site_list.csv')
 nhs_ods_list = read_excel('location_data/NHS_ODS.xlsx')
 hosp_2_list_in = read_csv('location_data/hospital_3.csv')
 ni_list = read_csv('location_data/niorg.csv', col_names = F)
@@ -463,6 +464,35 @@ combined_all = combined_all %>%
   mutate(postcode_start = gsub("[[:space:]].*", '', postcode)) %>% 
   left_join(postcode_to_city, by = 'postcode_start')
 
+#Now add in type of site
+combined_all = combined_all %>% 
+  left_join(site, by = c('dag_id'= 'NHS_ODS'))
+  
+lookup_missing_sites_type = combined_all %>% 
+  filter(!is.na(site.type)) %>% select(place_name, site_type2 = site.type) %>% distinct(place_name, .keep_all = T)
+
+combined_all = combined_all %>% 
+  left_join(lookup_missing_sites_type, by = 'place_name') %>% 
+  mutate(site_type = ifelse(is.na(site.type), site_type2, site.type)) %>% 
+  select(-site.type, -site_type2) %>% 
+  mutate(site_type = ifelse(dag_id == '14142','Acute', site_type),
+         site_type = ifelse(dag_id == '14152','Acute', site_type),
+         site_type = ifelse(dag_id == 'REMR0','Acute', site_type),
+         site_type = ifelse(dag_id == 'RM325','Acute', site_type),
+         site_type = ifelse(dag_id == 'RN770','Acute', site_type),
+         site_type = ifelse(dag_id == 'RRRR1','Acute', site_type),
+         site_type = ifelse(dag_id == 'rw602','Acute', site_type),
+         site_type = ifelse(dag_id == 'RX219','Community', site_type),
+         site_type = ifelse(dag_id == '7A1A8','Acute', site_type),
+         site_type = ifelse(dag_id == '7A1A9','Acute', site_type),
+         site_type = ifelse(dag_id == '7A1AY','Acute', site_type),
+         site_type = ifelse(dag_id == '7A1DD','Acute', site_type),
+         site_type = ifelse(dag_id == 'A103H','Community', site_type),
+         site_type = ifelse(dag_id == 'A215H','Community', site_type),
+         site_type = ifelse(dag_id == 'ZT003','Acute', site_type),
+         site_type = ifelse(dag_id == 'RQY01','Community', site_type))
+
+combined_all %>% filter(is.na(site_type))
 #Finally, add back in the townsend average scores to those which needed new postcodes
 postcode_lookup_tds = postcode_lookup_tds %>% 
   mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% 
