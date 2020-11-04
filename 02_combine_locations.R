@@ -451,7 +451,7 @@ combined_all = combined_all %>%
          ccg = ifelse(dag_id == 'RHX01', 'E38000021', ccg))
 
 no_location = combined_all %>% filter(is.na(postcode))
-# no_location = combined_all2 %>% filter(is.na(postcode)) %>% distinct(dag_id, .keep_all = T)
+# no_location = no_location %>% filter(is.na(postcode)) %>% distinct(dag_id, .keep_all = T)
 
 #Now lets add a city to postcode
 postcode_to_city = read_csv('location_data/postcode_city_district.csv') %>% 
@@ -493,9 +493,40 @@ combined_all = combined_all %>%
          site_type = ifelse(dag_id == 'RQY01','Community', site_type))
 
 combined_all %>% filter(is.na(site_type))
+
 #Finally, add back in the townsend average scores to those which needed new postcodes
+rank_by_lsoa = postcode_lookup_tds %>% 
+  mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% 
+  distinct(oa11, .keep_all = T) %>%
+  group_by(country) %>% 
+  mutate(imd_rank = rank(desc(imd), ties.method= "max")) %>% 
+  mutate(imd_decile = ntile(imd_rank, 10)) %>% 
+  mutate(imd_quintile = ntile(imd_rank, 5)) %>% 
+  select(oa11, imd_rank, imd_decile, imd_quintile)
+
+rank_by_ccg = postcode_lookup_tds %>% 
+  mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% 
+  distinct(oa11, .keep_all = T) %>%
+  group_by(country) %>% 
+  mutate(imd_rank = rank(desc(imd), ties.method= "max")) %>% 
+  mutate(imd_decile = ntile(imd_rank, 10)) %>% 
+  mutate(imd_quintile = ntile(imd_rank, 5)) %>% 
+  group_by(ccg) %>% 
+  summarise(median_ccg_imd_rank = median(imd_rank, na.rm = T),
+            median_ccg_imd_quintile = median(imd_quintile, na.rm = T),
+            median_ccg_imd_decile = median(imd_decile, na.rm = T),
+            mean_ccg_imd_rank = mean(imd_rank, na.rm = T),
+            mean_ccg_imd_quintile = mean(imd_quintile, na.rm = T),
+            mean_ccg_imd_decile = mean(imd_decile, na.rm = T)) %>% 
+  select(ccg, median_ccg_imd_rank, median_ccg_imd_quintile, median_ccg_imd_decile,
+         mean_ccg_imd_rank, mean_ccg_imd_quintile, mean_ccg_imd_decile)
+
+
+#rank_by_area %>% filter(country =='England') %>% select(pcds, imd_rank, imd_quintile) %>% data.frame()
+
 postcode_lookup_tds = postcode_lookup_tds %>% 
   mutate(ccg = ifelse(country != 'England', hlthau, ccg)) %>% 
+  group_by(oa11) %>% 
   ungroup() %>% 
   distinct(oa11, .keep_all = T) %>% 
   group_by(country) %>% 
@@ -530,12 +561,12 @@ postcode_lookup_tds = postcode_lookup_tds %>%
          prop_within_20_tds_ccg =  sum(n_within_20_tds)/sum(total_pop)) %>% 
   ungroup() %>% 
   select(ccg, imd_average_postcodes_new, tds_mean, w_me_imd, w_me_tds, w_har_tds, w_har_imd,
-         w_med_imd, w_med_tds, prop_within_10_imd_ccg, prop_within_20_imd_ccg, prop_within_10_tds_ccg, prop_within_20_tds_ccg) %>% 
+         w_med_imd, w_med_tds, prop_within_10_imd_ccg, prop_within_20_imd_ccg, prop_within_10_tds_ccg, prop_within_20_tds_ccg) %>%
   distinct(ccg, .keep_all = T) 
 
-
 combined_all = combined_all %>% 
-  left_join(postcode_lookup_tds, by = c('ccg' = 'ccg')) #%>% 
+  left_join(postcode_lookup_tds, by = c('ccg' = 'ccg')) %>% 
+  left_join(rank_by_ccg, by = c('ccg' = 'ccg'))
 
 # #CCGs not in 
 # list_english_nhs_trusts = read_csv('location_data/list_of_nhs_trusts.csv', col_names = F) %>%

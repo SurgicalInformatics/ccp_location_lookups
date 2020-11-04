@@ -2,62 +2,105 @@
 library(RCurl)
 library(tidyverse)
 
-# The API call can randomly fail
-# Let's try at least 5 times before we give up
-tries = 0
-# by default, NA gets the class "logical"
-data = NA
-while (tries == 0 | (tries < 5 & class(data) == "try-error")){
-  data = try(postForm(
+# ISARIC REDCap database analysis: API pull
+# API pull from Oxford REDCap server
+# Centre for Medical Informatics, Usher Institute, University of Edinburgh 2020
+
+# To use this, set your REDCap API token as an environment variable.
+## Uncomment and run the following line:
+# usethis::edit_r_environ()
+## this opens up .Renviron, add your token, e.g. ccp_token = 2F3xxxxxxxxxxxxE0111
+## Restart R
+
+# 1. API pull
+# 2. Apply REDCap R formatitng, file edited.
+# 3. Final object created: ccp_data
+
+# Libraries
+library(RCurl)
+library(tidyverse)
+library(REDCapR)
+
+# Functions for safe api pull
+rate = rate_backoff(pause_cap = 60*5, max_times = 10)
+insistent_postForm = purrr::insistently(postForm, rate)
+insistent_redcap_read = purrr::insistently(redcap_read, rate)
+batch = function(.vector, .n = 200){
+  split(.vector, ceiling(seq_along(.vector)/.n))
+}
+
+token_names = c(
+  "ccp_01_east_midlands",
+  "ccp_02_east_of_england",
+  "ccp_03_london",
+  "ccp_04_north_east_and_yorkshire",
+  "ccp_05_north_west",
+  "ccp_06_scotland",
+  "ccp_07_south_east",
+  "ccp_08_wales",
+  "ccp_09_west_midlands",
+  "ccp_10_northern_ireland",
+  "ccp_11_south_west"
+)
+
+data_collect = tibble()
+for (project in token_names){
+  # Get subjid
+  subjid = insistent_postForm(
     uri='https://ncov.medsci.ox.ac.uk/api/',
-    token=Sys.getenv("ccp_token"),
+    token=Sys.getenv(project),
     content='record',
+    #report_id='297',
+    'fields[0]'='subjid',
     format='csv',
     type='flat',
-    'fields[0]'='subjid',
     rawOrLabel='raw',
     rawOrLabelHeaders='raw',
     exportCheckboxLabel='false',
     exportSurveyFields='false',
-    exportDataAccessGroups='true',
+    exportDataAccessGroups='false',
     returnFormat='json'
-  ))
-  tries = tries + 1
-  # let's wait a second letting the API cool off
-  Sys.sleep(1)
+  ) %>% 
+    read_csv() %>% 
+    distinct(subjid) %>% 
+    pull(subjid)
+  
+  # Get data in batches
+  data = batch(subjid) %>% 
+    map_df(~ insistent_redcap_read(
+      redcap_uri = "https://ncov.medsci.ox.ac.uk/api/",
+      export_data_access_groups = TRUE,
+      token = Sys.getenv(project),
+      records = .x,
+      guess_type = FALSE)$data
+    )
+  if (nrow(data_collect) == 0){
+    data_collect = data
+  } else {
+    data_collect = bind_rows(data_collect, data)
+  }
+  
 }
-ccp_ids = read_csv(data, na = "", guess_max = 20000) %>% select(-redcap_repeat_instrument, - redcap_repeat_instance)
 
-# The API call can randomly fail
-# Let's try at least 5 times before we give up
-tries = 0
-# by default, NA gets the class "logical"
-data_label = NA
-while (tries == 0 | (tries < 5 & class(data_label) == "try-error")){
-  data_label = try(postForm(
-    uri='https://ncov.medsci.ox.ac.uk/api/',
-    token=Sys.getenv("ccp_token"),
-    content='record',
-    format='csv',
-    type='flat',
-    'fields[0]'='subjid',
-    rawOrLabel='label',
-    rawOrLabelHeaders='raw',
-    exportCheckboxLabel='false',
-    exportSurveyFields='false',
-    exportDataAccessGroups='true',
-    returnFormat='json'
-  ))
-  tries = tries + 1
-  # let's wait a second letting the API cool off
-  Sys.sleep(1)
-}
-ccp_ids_labelled = read_csv(data_label, na = "", guess_max = 20000) %>% select(-redcap_repeat_instrument, - redcap_repeat_instance)
+data = data_collect %>% 
+  type_convert() %>% 
+  as_tibble()
+rm(data_collect)
+
+ccp_data = data
+
+ccp_ids = data %>% select(-redcap_repeat_instrument, - redcap_repeat_instance)
+
+source('CCPUKSARI_R_2020-03-04_1532.r')
+ccp_data_labelled = data
+rm(data)
+
+#apply labels
 
 ccp_ids %>% 
   mutate(dag_id = gsub("\\-.*","", subjid)) -> ccp_ids
 
-ccp_ids_labelled %>% 
+ccp_data_labelled %>% 
   mutate(dag_id = gsub("\\-.*","", subjid)) -> ccp_ids_labelled
 
-rm(data, data_label, tries)
+rm(data, ccp_data_labelled)
