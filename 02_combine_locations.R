@@ -45,6 +45,7 @@ weighted.quantile <- function(x, w, probs=seq(0,1,0.25), na.rm=TRUE) {
   return(result)
 }
 
+`%ni%` = Negate(`%in%`)
 
 #Weighted median
 
@@ -74,8 +75,9 @@ register_google(api_key)
 
 #First the file from ewen
 site = read_csv('location_data/site_list.csv')
-nhs_ods_list = read_excel('location_data/NHS_ODS.xlsx')
-hosp_2_list_in = read_csv('location_data/hospital_3.csv')
+# nhs_ods_list = read_excel('location_data/NHS_ODS.xlsx')
+nhs_ods_list = read_csv('location_data/ods_out_2.csv')
+hosp_2_list_in = read_csv('location_data/hospital_3.csv') %>% filter(OrganisationCode %ni% nhs_ods_list$`ODS code`)
 ni_list = read_csv('location_data/niorg.csv', col_names = F)
 wales_list = read_csv('location_data/wlhbsite.csv', col_names = F)
 scotland_list = read_csv('location_data/scotland_hospitals.csv')
@@ -168,12 +170,22 @@ nhs_ods_list %>% select(`ODS code`, `ODS Name`, Postcode) %>%
   mutate(postcode = toupper(postcode),
          place_name = str_to_title(place_name),
          country = NA,
-         search_name = paste0(place_name, ', ', postcode)) %>% filter(!is.na(place_name)) -> nhs_ods_list
+         search_name = paste0(place_name, ', ', postcode)) %>% filter(!is.na(place_name)) %>% 
+  select(-country) -> nhs_ods_list
+
+#add country
+nhs_ods_list = nhs_ods_list %>%  left_join(
+postcode_lookup %>% select(pcds, oa11) %>% 
+  mutate(country = case_when(startsWith(oa11, 'S0') ~ 'Scotland',
+                             startsWith(oa11, 'E') ~ 'England',
+                             startsWith(oa11, 'W') ~ 'Wales')) %>% 
+  select(-oa11), by = c('postcode' = 'pcds'))
 
 #bind rows
-look_up_all = rbind(wales_list, ni_list, hosp_2_list, scotland_list) %>% 
+look_up_all = rbind(wales_list, ni_list, hosp_2_list, scotland_list, nhs_ods_list %>% select(-search_name)) %>% 
   mutate(search_name = paste0(place_name, ', ', postcode),
          org_code = ifelse(org_code == 'RHM00', 'RHM00', org_code)) #%>% 
+
 
 #  distinct(org_code, .keep_all = T)
 
@@ -185,7 +197,7 @@ ccp_looked_up = ccp_ids_labelled %>%
   filter(subjid != 'RHM01-0001') %>% 
   select(redcap_data_access_group, dag_id) %>% 
   #distinct(dag_id, .keep_all = T) %>% 
-  mutate(dag_id = str_replace_all(dag_id, 'O', '0')) %>% 
+  mutate(dag_id = toupper(str_replace_all(dag_id, 'O', '0'))) %>% 
   left_join(look_up_all, by = c('dag_id' = 'org_code')) 
 
 look_up_unmatch_wales = look_up_all %>% mutate(org_code = ifelse(country == 'Wales', paste0('WB', substring(org_code, 3)), org_code),
@@ -256,7 +268,8 @@ ccp_still_missings %>%
 #remove the ones with lat lons available from hosp_2_list
 ccp_combined_1 %>% 
   filter(dag_id %ni% hosp_2_list_in$OrganisationCode) %>% 
-  distinct(dag_id, .keep_all = T) -> ccp_combined_1_to_search
+  distinct(dag_id, .keep_all = T) %>% 
+  drop_na(postcode) -> ccp_combined_1_to_search
 
 ccp_combined_result_lat_long = geocode(ccp_combined_1_to_search$postcode, output = "latlona", source = "google") 
 
@@ -448,7 +461,56 @@ combined_all = combined_all %>%
          country = ifelse(dag_id == 'RHX01', 'England', country),
          lon = ifelse(dag_id == 'RHX01', -0.1182958, lon),
          lat = ifelse(dag_id == 'RHX01', 50.81935, lat),
-         ccg = ifelse(dag_id == 'RHX01', 'E38000021', ccg))
+         ccg = ifelse(dag_id == 'RHX01', 'E38000021', ccg))#,
+         # place_name = ifelse(dag_id == 'RHAPA', 'Nottinghamshire Healthcare NHS Foundation Trust', place_name),
+         # postcode = ifelse(dag_id == 'RHAPA', '', postcode),
+         # country = ifelse(dag_id == 'RHAPA', '', country),
+         # lon = ifelse(dag_id == 'RHAPA', -0.1182958, lon),
+         # lat = ifelse(dag_id == 'RHAPA', , lat),
+         # ccg = ifelse(dag_id == 'RHAPA', '', ccg),
+         # place_name = ifelse(dag_id == '', '', place_name),
+         # postcode = ifelse(dag_id == '', '', postcode),
+         # country = ifelse(dag_id == '', '', country),
+         # lon = ifelse(dag_id == '', -0.1182958, lon),
+         # lat = ifelse(dag_id == '', , lat),
+         # ccg = ifelse(dag_id == '', '', ccg),
+         # place_name = ifelse(dag_id == '', '', place_name),
+         # postcode = ifelse(dag_id == '', '', postcode),
+         # country = ifelse(dag_id == '', '', country),
+         # lon = ifelse(dag_id == '', -0.1182958, lon),
+         # lat = ifelse(dag_id == '', , lat),
+         # ccg = ifelse(dag_id == '', '', ccg),
+         # place_name = ifelse(dag_id == '', '', place_name),
+         # postcode = ifelse(dag_id == '', '', postcode),
+         # country = ifelse(dag_id == '', '', country),
+         # lon = ifelse(dag_id == '', -0.1182958, lon),
+         # lat = ifelse(dag_id == '', , lat),
+         # ccg = ifelse(dag_id == '', '', ccg),
+         # place_name = ifelse(dag_id == '', '', place_name),
+         # postcode = ifelse(dag_id == '', '', postcode),
+         # country = ifelse(dag_id == '', '', country),
+         # lon = ifelse(dag_id == '', -0.1182958, lon),
+         # lat = ifelse(dag_id == '', , lat),
+         # ccg = ifelse(dag_id == '', '', ccg),
+         # place_name = ifelse(dag_id == '', '', place_name),
+         # postcode = ifelse(dag_id == '', '', postcode),
+         # country = ifelse(dag_id == '', '', country),
+         # lon = ifelse(dag_id == '', -0.1182958, lon),
+         # lat = ifelse(dag_id == '', , lat),
+         # ccg = ifelse(dag_id == '', '', ccg),
+         # place_name = ifelse(dag_id == '', '', place_name),
+         # postcode = ifelse(dag_id == '', '', postcode),
+         # country = ifelse(dag_id == '', '', country),
+         # lon = ifelse(dag_id == '', -0.1182958, lon),
+         # lat = ifelse(dag_id == '', , lat),
+         # ccg = ifelse(dag_id == '', '', ccg))
+
+# place_name = ifelse(dag_id == '', '', place_name),
+# postcode = ifelse(dag_id == '', '', postcode),
+# country = ifelse(dag_id == '', '', country),
+# lon = ifelse(dag_id == '', -0.1182958, lon),
+# lat = ifelse(dag_id == '', , lat),
+# ccg = ifelse(dag_id == '', '', ccg),
 
 no_location = combined_all %>% filter(is.na(postcode))
 # no_location = no_location %>% filter(is.na(postcode)) %>% distinct(dag_id, .keep_all = T)
