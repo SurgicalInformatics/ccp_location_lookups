@@ -98,9 +98,17 @@ rm(data)
 #apply labels
 
 ccp_ids %>% 
-  mutate(dag_id = gsub("\\-.*","", subjid)) -> ccp_ids
+  mutate(dag_id = gsub("\\-.*","", subjid)) %>% 
+  mutate(dag_id = trimws(dag_id)) %>% 
+  mutate(dag_id = gsub("\\_.*","",dag_id)) %>% 
+  mutate(dag_id = gsub("\\-.*","",dag_id)) %>% 
+  mutate(dag_id = gsub("\\ .*","",dag_id)) -> ccp_ids
 
 ccp_data_labelled %>% 
-  mutate(dag_id = gsub("\\-.*","", subjid)) -> ccp_ids_labelled
+  mutate(dag_id = gsub("\\-.*","", subjid)) %>% 
+  mutate(dag_id = trimws(dag_id)) %>% 
+  mutate(dag_id = gsub("\\_.*","",dag_id)) %>% 
+  mutate(dag_id = gsub("\\-.*","",dag_id)) %>% 
+  mutate(dag_id = gsub("\\ .*","",dag_id)) -> ccp_ids_labelled
 
 rm(data, ccp_data_labelled)

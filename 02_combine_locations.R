@@ -198,7 +198,11 @@ ccp_looked_up = ccp_ids_labelled %>%
   select(redcap_data_access_group, dag_id) %>% 
   #distinct(dag_id, .keep_all = T) %>% 
   mutate(dag_id = toupper(str_replace_all(dag_id, 'O', '0'))) %>% 
-  left_join(look_up_all, by = c('dag_id' = 'org_code')) 
+  left_join(look_up_all, by = c('dag_id' = 'org_code')) %>% 
+  mutate(dag_id = gsub("\\_.*","",dag_id)) %>% 
+  mutate(dag_id = gsub("\\-.*","",dag_id)) %>% 
+  mutate(dag_id = gsub("\\ .*","",dag_id)) %>% 
+  mutate(dag_id = trimws(dag_id))
 
 look_up_unmatch_wales = look_up_all %>% mutate(org_code = ifelse(country == 'Wales', paste0('WB', substring(org_code, 3)), org_code),
                                                org_code = ifelse(org_code == 'WB2AL', 'WB3AL', org_code),
@@ -314,6 +318,11 @@ postcode_ccg = postcode_lookup %>%
   select(pcds, ccg)
 
 combined_all = combined_all %>% 
+  mutate(dag_id = trimws(dag_id)) %>% 
+  mutate(dag_id = gsub("\\_.*","",dag_id)) %>% 
+  mutate(dag_id = gsub("\\-.*","",dag_id)) %>% 
+  mutate(dag_id = gsub("\\ .*","",dag_id)) %>% 
+  mutate(dag_id = ifelse(str_count(dag_id) > 6, str_sub(dag_id, end = -4), dag_id)) %>% 
   left_join(postcode_ccg, by = c('postcode' = 'pcds'))
 
 #Add manual edits
@@ -461,50 +470,145 @@ combined_all = combined_all %>%
          country = ifelse(dag_id == 'RHX01', 'England', country),
          lon = ifelse(dag_id == 'RHX01', -0.1182958, lon),
          lat = ifelse(dag_id == 'RHX01', 50.81935, lat),
-         ccg = ifelse(dag_id == 'RHX01', 'E38000021', ccg))#,
-         # place_name = ifelse(dag_id == 'RHAPA', 'Nottinghamshire Healthcare NHS Foundation Trust', place_name),
-         # postcode = ifelse(dag_id == 'RHAPA', '', postcode),
-         # country = ifelse(dag_id == 'RHAPA', '', country),
-         # lon = ifelse(dag_id == 'RHAPA', -0.1182958, lon),
-         # lat = ifelse(dag_id == 'RHAPA', , lat),
-         # ccg = ifelse(dag_id == 'RHAPA', '', ccg),
-         # place_name = ifelse(dag_id == '', '', place_name),
-         # postcode = ifelse(dag_id == '', '', postcode),
-         # country = ifelse(dag_id == '', '', country),
-         # lon = ifelse(dag_id == '', -0.1182958, lon),
-         # lat = ifelse(dag_id == '', , lat),
-         # ccg = ifelse(dag_id == '', '', ccg),
-         # place_name = ifelse(dag_id == '', '', place_name),
-         # postcode = ifelse(dag_id == '', '', postcode),
-         # country = ifelse(dag_id == '', '', country),
-         # lon = ifelse(dag_id == '', -0.1182958, lon),
-         # lat = ifelse(dag_id == '', , lat),
-         # ccg = ifelse(dag_id == '', '', ccg),
-         # place_name = ifelse(dag_id == '', '', place_name),
-         # postcode = ifelse(dag_id == '', '', postcode),
-         # country = ifelse(dag_id == '', '', country),
-         # lon = ifelse(dag_id == '', -0.1182958, lon),
-         # lat = ifelse(dag_id == '', , lat),
-         # ccg = ifelse(dag_id == '', '', ccg),
-         # place_name = ifelse(dag_id == '', '', place_name),
-         # postcode = ifelse(dag_id == '', '', postcode),
-         # country = ifelse(dag_id == '', '', country),
-         # lon = ifelse(dag_id == '', -0.1182958, lon),
-         # lat = ifelse(dag_id == '', , lat),
-         # ccg = ifelse(dag_id == '', '', ccg),
-         # place_name = ifelse(dag_id == '', '', place_name),
-         # postcode = ifelse(dag_id == '', '', postcode),
-         # country = ifelse(dag_id == '', '', country),
-         # lon = ifelse(dag_id == '', -0.1182958, lon),
-         # lat = ifelse(dag_id == '', , lat),
-         # ccg = ifelse(dag_id == '', '', ccg),
-         # place_name = ifelse(dag_id == '', '', place_name),
-         # postcode = ifelse(dag_id == '', '', postcode),
-         # country = ifelse(dag_id == '', '', country),
-         # lon = ifelse(dag_id == '', -0.1182958, lon),
-         # lat = ifelse(dag_id == '', , lat),
-         # ccg = ifelse(dag_id == '', '', ccg))
-
+         ccg = ifelse(dag_id == 'RHX01', 'E38000021', ccg),
+         place_name = ifelse(grepl('N101|N100H',dag_id, ignore.case = T), 'Aberdeen Royal Infirmary', place_name),
+         postcode = ifelse(grepl('N101|N100H',dag_id, ignore.case = T), 'AB25 2ZN', postcode),
+         country = ifelse(grepl('N101|N100H',dag_id, ignore.case = T), 'Scotland', country),
+         lon = ifelse(grepl('N101|N100H',dag_id, ignore.case = T),-2.137269 , lon),
+         lat = ifelse(grepl('N101|N100H',dag_id, ignore.case = T), 57.15470, lat),
+         ccg = ifelse(grepl('N101|N100H',dag_id, ignore.case = T), 'S08000020', ccg),
+         place_name = ifelse(grepl('RTX02',dag_id, ignore.case = T), 'Royal Lancaster Infirmary', place_name),
+         postcode = ifelse(grepl('RTX02',dag_id, ignore.case = T), 'LA1 4RP', postcode),
+         country = ifelse(grepl('RTX02',dag_id, ignore.case = T), 'England', country),
+         lon = ifelse(grepl('RTX02',dag_id, ignore.case = T), -2.800020, lon),
+         lat = ifelse(grepl('RTX02',dag_id, ignore.case = T), 54.04307, lat),
+         ccg = ifelse(grepl('RTX02',dag_id, ignore.case = T), 'E38000228', ccg),
+         place_name = ifelse(grepl('ARVR', dag_id, ignore.case = T), 'St Helier Hospital', place_name),
+         postcode = ifelse(grepl('ARVR',dag_id, ignore.case = T), 'SM5 1AA', postcode),
+         country = ifelse(grepl('ARVR',dag_id, ignore.case = T), 'England', country),
+         lon = ifelse(grepl('ARVR',dag_id, ignore.case = T), -0.1845814, lon),
+         lat = ifelse(grepl('ARVR',dag_id, ignore.case = T), 51.38063, lat),
+         ccg = ifelse(grepl('ARVR',dag_id, ignore.case = T), 'E38000179', ccg),
+         place_name = ifelse(grepl('R0A07',dag_id, ignore.case = T), 'Wythenshawe Hospital', place_name),
+         postcode = ifelse(grepl('R0A07',dag_id, ignore.case = T), 'M23 9LT', postcode),
+         country = ifelse(grepl('R0A07',dag_id, ignore.case = T), 'England', country),
+         lon = ifelse(grepl('R0A07',dag_id, ignore.case = T), -2.292308, lon),
+         lat = ifelse(grepl('R0A07',dag_id, ignore.case = T), 53.38822, lat),
+         ccg = ifelse(grepl('R0A07',dag_id, ignore.case = T), 'E38000217', ccg),
+         place_name = ifelse(grepl('RXQ02|RZQ02',dag_id, ignore.case = T), 'Stoke Mandeville Hospital', place_name),
+         postcode = ifelse(grepl('RXQ02|RZQ02',dag_id, ignore.case = T), 'HP21 8AL', postcode),
+         country = ifelse(grepl('RXQ02|RZQ02',dag_id, ignore.case = T), 'England', country),
+         lon = ifelse(grepl('RXQ02|RZQ02',dag_id, ignore.case = T), -0.8008387, lon),
+         lat = ifelse(grepl('RXQ02|RZQ02',dag_id, ignore.case = T), 51.79839, lat),
+         ccg = ifelse(grepl('RXQ02|RZQ02',dag_id, ignore.case = T), 'E38000223', ccg),
+         place_name = ifelse(grepl('RVV09',dag_id, ignore.case = T), 'Queen Elizabeth The Queen Mother Hospital', place_name),
+         postcode = ifelse(grepl('RVV09',dag_id, ignore.case = T), 'CT9 4AN', postcode),
+         country = ifelse(grepl('RVV09',dag_id, ignore.case = T), 'England', country),
+         lon = ifelse(grepl('RVV09',dag_id, ignore.case = T), 1.3893987, lon),
+         lat = ifelse(grepl('RVV09',dag_id, ignore.case = T), 51.37805, lat),
+         ccg = ifelse(grepl('RVV09',dag_id, ignore.case = T), 'E38000184', ccg),
+         place_name = ifelse(grepl('RDEE', dag_id, ignore.case = T), 'Colchester General Hospital', place_name),
+         postcode = ifelse(grepl('RDEE',dag_id, ignore.case = T), 'CO4 5JL', postcode),
+         country = ifelse(grepl('RDEE',dag_id, ignore.case = T), 'England', country),
+         lon = ifelse(grepl('RDEE',dag_id, ignore.case = T), 0.8997715, lon),
+         lat = ifelse(grepl('RDEE',dag_id, ignore.case = T), 51.91029, lat),
+         ccg = ifelse(grepl('RDEE',dag_id, ignore.case = T), 'E38000117', ccg),
+         place_name = ifelse(grepl('RX1CC',dag_id, ignore.case = T), 'Nottingham University Hospitals Nhs Trust - City Campus', place_name),
+         postcode = ifelse(grepl('RX1CC',dag_id, ignore.case = T), 'NG5 1PB', postcode),
+         country = ifelse(grepl('RX1CC',dag_id, ignore.case = T), 'England', country),
+         lon = ifelse(grepl('RX1CC',dag_id, ignore.case = T), -1.16008, lon),
+         lat = ifelse(grepl('RX1CC',dag_id, ignore.case = T), 52.99022, lat),
+         ccg = ifelse(grepl('RX1CC',dag_id, ignore.case = T), 'E38000132', ccg),
+         place_name = ifelse(grepl('RMC',dag_id, ignore.case = T), 'Royal Bolton Hospital', place_name),
+         postcode = ifelse(grepl('RMC',dag_id, ignore.case = T), 'BL4 0JR', postcode),
+         country = ifelse(grepl('RMC',dag_id, ignore.case = T), 'England', country),
+         lon = ifelse(grepl('RMC',dag_id, ignore.case = T), -2.433355, lon),
+         lat = ifelse(grepl('RMC',dag_id, ignore.case = T), 53.55443, lat),
+         ccg = ifelse(grepl('RMC',dag_id, ignore.case = T), 'E38000016', ccg),
+         place_name = ifelse(grepl('RJN71',dag_id, ignore.case = T), 'Macclesfield District General Hospital', place_name),
+         postcode = ifelse(grepl('RJN71',dag_id, ignore.case = T), 'SK10 3BL', postcode),
+         country = ifelse(grepl('RJN71',dag_id, ignore.case = T), 'England', country),
+         lon = ifelse(grepl('RJN71',dag_id, ignore.case = T), -2.142082, lon),
+         lat = ifelse(grepl('RJN71',dag_id, ignore.case = T), 53.26183, lat),
+         ccg = ifelse(grepl('RJN71',dag_id, ignore.case = T), 'E38000056', ccg),
+         place_name = ifelse(grepl('RXN',dag_id, ignore.case = T), 'Royal Preston Hospital', place_name),
+         postcode = ifelse(grepl('RXN',dag_id, ignore.case = T), 'PR2 9HT', postcode),
+         country = ifelse(grepl('RXN',dag_id, ignore.case = T), 'England', country),
+         lon = ifelse(grepl('RXN',dag_id, ignore.case = T), -2.704496, lon),
+         lat = ifelse(grepl('RXN',dag_id, ignore.case = T), 53.79086, lat),
+         ccg = ifelse(grepl('RXN',dag_id, ignore.case = T), 'E38000227', ccg),
+         place_name = ifelse(grepl('RXPCP',dag_id, ignore.case = T), 'University Hospital Of North Durham', place_name),
+         postcode = ifelse(grepl('RXPCP',dag_id, ignore.case = T), 'DH1 5TW', postcode),
+         country = ifelse(grepl('RXPCP',dag_id, ignore.case = T), 'England', country),
+         lon = ifelse(grepl('RXPCP',dag_id, ignore.case = T),-1.593417 , lon),
+         lat = ifelse(grepl('RXPCP',dag_id, ignore.case = T), 54.78880, lat),
+         ccg = ifelse(grepl('RXPCP',dag_id, ignore.case = T), 'E38000116', ccg),
+         place_name = ifelse(grepl('RXPXP',dag_id, ignore.case = T), 'University Hospital Of North Durham', place_name),
+         postcode = ifelse(grepl('RXPXP',dag_id, ignore.case = T), 'DH1 5TW', postcode),
+         country = ifelse(grepl('RXPXP',dag_id, ignore.case = T), 'England', country),
+         lon = ifelse(grepl('RXPXP',dag_id, ignore.case = T),-1.593417 , lon),
+         lat = ifelse(grepl('RXPXP',dag_id, ignore.case = T), 54.78880, lat),
+         ccg = ifelse(grepl('RXPXP',dag_id, ignore.case = T), 'E38000116', ccg),
+         place_name = ifelse(grepl('RXPD',dag_id, ignore.case = T), 'Darlington Memorial Hospital', place_name),
+         postcode = ifelse(grepl('RXPD',dag_id, ignore.case = T), 'DL3 6HX', postcode),
+         country = ifelse(grepl('RXPD',dag_id, ignore.case = T), 'England', country),
+         lon = ifelse(grepl('RXPD',dag_id, ignore.case = T), -1.563310, lon),
+         lat = ifelse(grepl('RXPD',dag_id, ignore.case = T), 54.53039, lat),
+         ccg = ifelse(grepl('RXPD',dag_id, ignore.case = T), 'E38000042', ccg),
+         place_name = ifelse(grepl('RX1R',dag_id, ignore.case = T), "Nottingham University Hospitals Nhs Trust - Queen's Medical Centre Campus", place_name),
+         postcode = ifelse(grepl('RX1R',dag_id, ignore.case = T), 'NG7 2UH', postcode),
+         country = ifelse(grepl('RX1R',dag_id, ignore.case = T), 'England', country),
+         lon = ifelse(grepl('RX1R',dag_id, ignore.case = T), -1.185, lon),
+         lat = ifelse(grepl('RX1R',dag_id, ignore.case = T), 52.94435, lat),
+         ccg = ifelse(grepl('RX1R',dag_id, ignore.case = T), 'E38000132', ccg),
+         place_name = ifelse(grepl('RWDLA',dag_id, ignore.case = T), 'Pilgrim Hospital', place_name),
+         postcode = ifelse(grepl('RWDLA',dag_id, ignore.case = T), 'PE21 9QS', postcode),
+         country = ifelse(grepl('RWDLA',dag_id, ignore.case = T), 'England', country),
+         lon = ifelse(grepl('RWDLA',dag_id, ignore.case = T), -0.0097936, lon),
+         lat = ifelse(grepl('RWDLA',dag_id, ignore.case = T), 52.99102, lat),
+         ccg = ifelse(grepl('RWDLA',dag_id, ignore.case = T), 'E38000099', ccg),
+         place_name = ifelse(grepl('RD13',dag_id, ignore.case = T), '', place_name),
+         postcode = ifelse(grepl('RD13',dag_id, ignore.case = T), 'BA1 3NG', postcode),
+         country = ifelse(grepl('RD13',dag_id, ignore.case = T), 'England', country),
+         lon = ifelse(grepl('RD13',dag_id, ignore.case = T), -2.391191, lon),
+         lat = ifelse(grepl('RD13',dag_id, ignore.case = T), 51.39284, lat),
+         ccg = ifelse(grepl('RD13',dag_id, ignore.case = T), 'E38000009', ccg))#,
+         # place_name = ifelse(grepl('RD13',dag_id, ignore.case = T), '', place_name))#,
+         # postcode = ifelse(grepl('',dag_id, ignore.case = T), '', postcode),
+         # country = ifelse(grepl('',dag_id, ignore.case = T), '', country),
+         # lon = ifelse(grepl('',dag_id, ignore.case = T), , lon),
+         # lat = ifelse(grepl('',dag_id, ignore.case = T), , lat),
+         # ccg = ifelse(grepl('',dag_id, ignore.case = T), '', ccg),
+         # place_name = ifelse(grepl('',dag_id, ignore.case = T), '', place_name),
+         # postcode = ifelse(grepl('',dag_id, ignore.case = T), '', postcode),
+         # country = ifelse(grepl('',dag_id, ignore.case = T), '', country),
+         # lon = ifelse(grepl('',dag_id, ignore.case = T), , lon),
+         # lat = ifelse(grepl('',dag_id, ignore.case = T), , lat),
+         # ccg = ifelse(grepl('',dag_id, ignore.case = T), '', ccg),
+         # place_name = ifelse(grepl('',dag_id, ignore.case = T), '', place_name),
+         # postcode = ifelse(grepl('',dag_id, ignore.case = T), '', postcode),
+         # country = ifelse(grepl('',dag_id, ignore.case = T), '', country),
+         # lon = ifelse(grepl('',dag_id, ignore.case = T), , lon),
+         # lat = ifelse(grepl('',dag_id, ignore.case = T), , lat),
+         # ccg = ifelse(grepl('',dag_id, ignore.case = T), '', ccg),
+         # place_name = ifelse(grepl('',dag_id, ignore.case = T), '', place_name),
+         # postcode = ifelse(grepl('',dag_id, ignore.case = T), '', postcode),
+         # country = ifelse(grepl('',dag_id, ignore.case = T), '', country),
+         # lon = ifelse(grepl('',dag_id, ignore.case = T), , lon),
+         # lat = ifelse(grepl('',dag_id, ignore.case = T), , lat),
+         # ccg = ifelse(grepl('',dag_id, ignore.case = T), '', ccg),
+         # place_name = ifelse(grepl('',dag_id, ignore.case = T), '', place_name),
+         # postcode = ifelse(grepl('',dag_id, ignore.case = T), '', postcode),
+         # country = ifelse(grepl('',dag_id, ignore.case = T), '', country),
+         # lon = ifelse(grepl('',dag_id, ignore.case = T), , lon),
+         # lat = ifelse(grepl('',dag_id, ignore.case = T), , lat),
+         # ccg = ifelse(grepl('',dag_id, ignore.case = T), '', ccg),
+         # place_name = ifelse(grepl('',dag_id, ignore.case = T), '', place_name),
+         # postcode = ifelse(grepl('',dag_id, ignore.case = T), '', postcode),
+         # country = ifelse(grepl('',dag_id, ignore.case = T), '', country),
+         # lon = ifelse(grepl('',dag_id, ignore.case = T), , lon),
+         # lat = ifelse(grepl('',dag_id, ignore.case = T), , lat),
+         # ccg = ifelse(grepl('',dag_id, ignore.case = T), '', ccg))
 # place_name = ifelse(dag_id == '', '', place_name),
 # postcode = ifelse(dag_id == '', '', postcode),
 # country = ifelse(dag_id == '', '', country),
@@ -512,8 +616,84 @@ combined_all = combined_all %>%
 # lat = ifelse(dag_id == '', , lat),
 # ccg = ifelse(dag_id == '', '', ccg),
 
-no_location = combined_all %>% filter(is.na(postcode))
+# No location
+
+no_location = combined_all %>% filter(is.na(postcode) | grepl('_', place_name)) %>% 
+  mutate(incorrect_dag_id = 'Incorrect')
+
+correct_ids = combined_all %>% 
+  filter(!dag_id %in% no_location$dag_id) %>% 
+  rename_all(paste0, "_corrected") 
+
+no_location_add = no_location %>% 
+  left_join(correct_ids, by = c('postcode' = 'postcode_corrected')) %>% 
+         mutate(place_name = ifelse(is.na(place_name_corrected), place_name, place_name_corrected),
+                lon = ifelse(is.na(lon_corrected), lon, lon_corrected),
+                lat = ifelse(is.na(lat_corrected), lat, lat_corrected),
+                country = ifelse(is.na(country_corrected), country, country_corrected),
+                ccg = ifelse(is.na(ccg_corrected), ccg, ccg_corrected)) %>% 
+           filter(!is.na(place_name_corrected)) %>% 
+  filter(place_name != 'Surgery Department') %>% 
+  select(-contains('_corrected'), -incorrect_dag_id)
+
+#remove postcoded looked up from no_location
+no_location = no_location %>% 
+  filter(!dag_id %in% no_location_add$dag_id)
+
+combined_all = combined_all %>% 
+  filter(!dag_id %in% no_location_add$dag_id) %>% 
+  rbind(., no_location_add)
+
+#finally with the misspelt ones, work out what they might be based on DAG names
+
+#so most common by dag
+
+commonest_dags = ccp_data %>%
+  mutate(dag_id = gsub("\\-.*","", subjid)) %>% 
+  mutate(dag_id = trimws(dag_id)) %>% 
+  mutate(dag_id = gsub("\\_.*","",dag_id)) %>% 
+  mutate(dag_id = gsub("\\-.*","",dag_id)) %>% 
+  mutate(dag_id = gsub("\\ .*","",dag_id)) %>% 
+  filter(grepl('adm', redcap_event_name, ignore.case = T)) %>% 
+  filter(is.na(redcap_repeat_instrument)) %>% 
+  group_by(redcap_data_access_group) %>% 
+  count(dag_id) %>% 
+  group_by(redcap_data_access_group) %>% 
+  arrange(desc(n)) %>% 
+  slice(1) %>% 
+  ungroup()
+
+best_names = combined_all %>% 
+  filter(!dag_id %in% no_location$dag_id) %>% 
+  filter(dag_id %in% commonest_dags$dag_id) %>% 
+  distinct(redcap_data_access_group, .keep_all = T) %>% 
+  rename_all(paste0, "_corrected") 
+
+no_location_2 = no_location %>% 
+  left_join(best_names, by = c('redcap_data_access_group' = 'redcap_data_access_group_corrected')) %>% 
+  mutate(place_name = ifelse(is.na(place_name_corrected), place_name, place_name_corrected),
+         lon = ifelse(is.na(lon_corrected), lon, lon_corrected),
+         lat = ifelse(is.na(lat_corrected), lat, lat_corrected),
+         country = ifelse(is.na(country_corrected), country, country_corrected),
+         postcode = ifelse(is.na(postcode_corrected), postcode, postcode_corrected),
+         ccg = ifelse(is.na(ccg_corrected), ccg, ccg_corrected)) %>% 
+  filter(!is.na(place_name_corrected)) %>% 
+  filter(place_name != 'Surgery Department') %>% 
+  select(-contains('_corrected'), -incorrect_dag_id)
+
+#change this if not to guess
+guess_dags = T
+
+if(guess_dags == T){
+  combined_all = combined_all %>% 
+    filter(!dag_id %in% no_location_2$dag_id) %>% 
+    rbind(., no_location_2) %>% 
+    distinct(dag_id, redcap_data_access_group, place_name, .keep_all = T)
+  
+}
+
 # no_location = no_location %>% filter(is.na(postcode)) %>% distinct(dag_id, .keep_all = T)
+# write_rds(no_location, 'no_location.rds')
 
 #Now lets add a city to postcode
 postcode_to_city = read_csv('location_data/postcode_city_district.csv') %>% 
