@@ -145,7 +145,9 @@ wales_list %>% select(X1, X2, X10) %>%
          postcode = X10) %>% 
   mutate(postcode = toupper(postcode),
          place_name = str_to_title(place_name),
-         country = 'Wales')  -> wales_list
+         country = 'Wales') %>% 
+  mutate(org_code = case_when(org_code == '7A2AJ' ~ 'WB2AJ',
+                              TRUE ~ org_code)) -> wales_list
 
 ni_list %>% select(X1, X2, X10) %>% 
   rename(org_code = X1,
